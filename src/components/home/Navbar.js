@@ -1,12 +1,25 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Logo from "../../assets/images/logo.png";
 import { UserOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import "../../assets/styles/home-styles.css";
+import LoginRegisterModal from "./LoginRegisterModal";
 
 const Navbar = () => {
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+
+  const showLoginModal = () => {
+    setIsLoginModalOpen(true);
+  };
+  const loginModalHandleOk = () => {
+    setIsLoginModalOpen(false);
+  };
+  const loginModalHandleCancel = () => {
+    setIsLoginModalOpen(false);
+  };
+
   const items = [
     {
       key: "1",
@@ -32,9 +45,19 @@ const Navbar = () => {
         items={items}
         className="menu"
       />
-      <Button type="primary" icon={<UserOutlined />} shape="round">
+      <Button
+        type="primary"
+        icon={<UserOutlined />}
+        shape="round"
+        onClick={showLoginModal}
+      >
         Login/Register
       </Button>
+      <LoginRegisterModal
+        isModalOpen={isLoginModalOpen}
+        handleOk={loginModalHandleOk}
+        handleCancel={loginModalHandleCancel}
+      />
     </>
   );
 };
