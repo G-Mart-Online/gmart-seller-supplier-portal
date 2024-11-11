@@ -1,6 +1,7 @@
 import React from "react";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex } from "antd";
+import SocialLogin from "./SocialLogin";
 
 const LoginForm = () => {
   const onFinish = (values) => {
@@ -60,6 +61,8 @@ const LoginForm = () => {
         </Button>
         or <a href="">Register now!</a>
       </Form.Item>
+
+      <SocialLogin />
     </Form>
   );
 };

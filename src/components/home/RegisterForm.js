@@ -1,6 +1,7 @@
 import React from "react";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex } from "antd";
+import SocialLogin from "./SocialLogin";
 
 const RegisterForm = () => {
   const onFinish = (values) => {
@@ -96,6 +97,8 @@ const RegisterForm = () => {
         </Button>
         or <a href="">Already have an account?</a>
       </Form.Item>
+
+      <SocialLogin />
     </Form>
   );
 };
