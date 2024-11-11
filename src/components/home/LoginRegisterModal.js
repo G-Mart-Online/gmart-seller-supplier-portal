@@ -1,6 +1,7 @@
 import React from "react";
 import { Modal, Tabs } from "antd";
 import LoginForm from "./LoginForm";
+import RegisterForm from "./RegisterForm";
 
 const LoginRegisterModal = ({ isModalOpen, handleOk, handleCancel }) => {
   const items = [
@@ -12,7 +13,7 @@ const LoginRegisterModal = ({ isModalOpen, handleOk, handleCancel }) => {
     {
       key: "2",
       label: "Register",
-      children: "Content of Tab Pane 2",
+      children: <RegisterForm />,
     },
   ];
 

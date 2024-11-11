@@ -13,9 +13,6 @@ const LoginForm = () => {
       initialValues={{
         remember: true,
       }}
-      //   style={{
-      //     maxWidth: 360,
-      //   }}
       onFinish={onFinish}
     >
       <Form.Item
