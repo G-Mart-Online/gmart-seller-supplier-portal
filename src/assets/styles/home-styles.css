@@ -30,10 +30,20 @@
   width: 200px;
 }
 
+.carousel-image-container {
+  position: relative;
+  width: 100%;
+  height: 500px; /* Define the height of your carousel */
+  overflow: hidden; /* Crop overflow to fit the carousel */
+}
+
 .carousel-content {
-  margin: 0;
-  height: 400px;
-  color: #fff;
-  line-height: 160px;
-  background: #364d79;
+  object-fit: cover;
+}
+
+.login-success-result {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

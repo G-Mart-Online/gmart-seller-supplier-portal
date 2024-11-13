@@ -1,12 +1,33 @@
-import React from "react";
-import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex } from "antd";
 import SocialLogin from "./SocialLogin";
+import useAuthGuard from "@/utils/useAuthGuard";
 
 const LoginForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { login } = useAuthGuard({
+    middleware: "guest",
+    redirectIfAuthenticated: "/auth/login-success",
+  });
+  const [error, setError] = useState();
+
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
+    setError(null);
+    setIsLoading(true);
+    login({
+      onError: (errors) => {
+        setError(errors);
+        if (errors) {
+          console.error("Error occured while login:", error);
+        }
+      },
+      props: values,
+    }).finally(() => setIsLoading(false));
   };
+
+  const isBadCredentials = error?.httpStatus === "UNAUTHORIZED";
 
   return (
     <Form
@@ -28,6 +49,8 @@ const LoginForm = () => {
             message: "Please input your E-mail!",
           },
         ]}
+        validateStatus={isBadCredentials ? "error" : ""}
+        help={isBadCredentials ? "Invalid email or password" : ""}
       >
         <Input prefix={<MailOutlined />} placeholder="Email" />
       </Form.Item>
@@ -39,6 +62,8 @@ const LoginForm = () => {
             message: "Please input your Password!",
           },
         ]}
+        validateStatus={isBadCredentials ? "error" : ""}
+        help={isBadCredentials ? "Invalid email or password" : ""}
       >
         <Input
           prefix={<LockOutlined />}
@@ -56,7 +81,7 @@ const LoginForm = () => {
       </Form.Item>
 
       <Form.Item>
-        <Button block type="primary" htmlType="submit">
+        <Button block type="primary" htmlType="submit" loading={isLoading}>
           Log in
         </Button>
         or <a href="">Register now!</a>

@@ -2,15 +2,9 @@
 import { Carousel } from "antd";
 import React from "react";
 import "../../../assets/styles/home-styles.css";
-
-const contentStyle = {
-  margin: 0,
-  height: "400px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#364d79",
-};
+import Image from "next/image";
+import CarouselImg1 from "../../../assets/images/carousel_img_1.jpg";
+import CarouselImg2 from "../../../assets/images/carousel_img_2.jpg";
 
 const HomeCarousel = () => {
   const onChange = (currentSlide) => {
@@ -18,17 +12,21 @@ const HomeCarousel = () => {
   };
   return (
     <Carousel afterChange={onChange}>
-      <div>
-        <h3 className="carousel-content"></h3>
+      <div className="carousel-image-container">
+        <Image
+          className="carousel-content"
+          src={CarouselImg1}
+          alt="Carousel Image 01"
+          fill
+        />
       </div>
-      <div>
-        <h3 className="carousel-content"></h3>
-      </div>
-      <div>
-        <h3 className="carousel-content"></h3>
-      </div>
-      <div>
-        <h3 className="carousel-content"></h3>
+      <div className="carousel-image-container">
+        <Image
+          className="carousel-content"
+          src={CarouselImg2}
+          alt="Carousel Image 01"
+          fill
+        />
       </div>
     </Carousel>
   );

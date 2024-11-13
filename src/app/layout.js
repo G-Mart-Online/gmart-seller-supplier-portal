@@ -3,7 +3,6 @@ import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
 import { THEME_OPTIONS } from "@/constants/constants";
-import HomeLayout from "@/components/home/HomeLayout";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -37,7 +36,7 @@ export default function RootLayout({ children }) {
               },
             }}
           >
-            <HomeLayout children={children} />
+            {children}
           </ConfigProvider>
         </AntdRegistry>
       </body>

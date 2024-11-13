@@ -27,11 +27,11 @@ const Navbar = () => {
     },
     {
       key: "2",
-      label: "Categories",
+      label: "About",
     },
     {
       key: "3",
-      label: "Deals",
+      label: "Contact",
     },
   ];
 
