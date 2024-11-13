@@ -6,8 +6,11 @@ import { UserOutlined } from "@ant-design/icons";
 import { Button, Menu } from "antd";
 import "../../assets/styles/home-styles.css";
 import LoginRegisterModal from "./LoginRegisterModal";
+import useAuthGuard from "@/utils/useAuthGuard";
+import AuthUserNav from "../common/AuthUserNav";
 
 const Navbar = () => {
+  const { user } = useAuthGuard({ middleware: "guest" });
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
   const showLoginModal = () => {
@@ -45,14 +48,20 @@ const Navbar = () => {
         items={items}
         className="menu"
       />
-      <Button
-        type="primary"
-        icon={<UserOutlined />}
-        shape="round"
-        onClick={showLoginModal}
-      >
-        Login/Register
-      </Button>
+
+      {!user && (
+        <Button
+          type="primary"
+          icon={<UserOutlined />}
+          shape="round"
+          onClick={showLoginModal}
+        >
+          Login/Register
+        </Button>
+      )}
+
+      {user && <AuthUserNav />}
+
       <LoginRegisterModal
         isModalOpen={isLoginModalOpen}
         handleOk={loginModalHandleOk}

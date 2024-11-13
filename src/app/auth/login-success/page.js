@@ -1,7 +1,6 @@
 "use client";
 import useAuthGuard from "@/utils/useAuthGuard";
-import { Button, Result } from "antd";
-import Link from "next/link";
+import { Button, Result, Spin } from "antd";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
@@ -31,6 +30,14 @@ const LoginSuccess = () => {
       }
     }
   }, [counter, user, router, logout]);
+
+  if (!user) {
+    return (
+      <div className="login-success-result">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div className="login-success-result">
