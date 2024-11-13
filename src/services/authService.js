@@ -30,7 +30,6 @@ export const getUserRegistered = async (data) => {
 export const getAuthenticatedUser = async () => {
   try {
     const response = await httpClient.get("/api/v1/auth/me");
-    console.log("Response", response);
     return response.data;
   } catch (error) {
     throw error;

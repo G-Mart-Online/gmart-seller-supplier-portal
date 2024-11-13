@@ -15,7 +15,6 @@ const LoginForm = () => {
   const { openNotification, contextHolder } = useNotification();
 
   const onFinish = async (values) => {
-    console.log("Received values of form: ", values);
     setError(null);
     setIsLoading(true);
     try {
