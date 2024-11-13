@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { LockOutlined, MailOutlined } from "@ant-design/icons";
-import { Button, Checkbox, Form, Input, Flex } from "antd";
+import { Button, Checkbox, Form, Input, Flex, Alert, notification } from "antd";
 import SocialLogin from "./SocialLogin";
 import useAuthGuard from "@/utils/useAuthGuard";
-import useNotification from "@/utils/useNotification";
 
-const LoginForm = () => {
+const LoginForm = ({ handleClose }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuthGuard({
     middleware: "guest",
     redirectIfAuthenticated: "/auth/login-success",
   });
   const [error, setError] = useState();
-  const { openNotification, contextHolder } = useNotification();
 
   const onFinish = async (values) => {
     setError(null);
@@ -21,10 +19,7 @@ const LoginForm = () => {
       await login({
         onError: (errors) => {
           setError(errors);
-          if (errors) {
-            openNotification("error", "Error Title", error.message);
-            console.error("Error occurred while logging in:", errors);
-          }
+          console.error("Error occurred while logging in:", errors);
         },
         props: values,
       });
@@ -42,6 +37,13 @@ const LoginForm = () => {
         }}
         onFinish={onFinish}
       >
+        {error && (
+          <Alert
+            message={error?.message || "Unexpected error occurred"}
+            type="error"
+            style={{ marginBottom: "5px" }}
+          />
+        )}
         <Form.Item
           name="email"
           rules={[
@@ -66,11 +68,7 @@ const LoginForm = () => {
             },
           ]}
         >
-          <Input
-            prefix={<LockOutlined />}
-            type="password"
-            placeholder="Password"
-          />
+          <Input.Password prefix={<LockOutlined />} placeholder="Password" />
         </Form.Item>
         <Form.Item>
           <Flex justify="space-between" align="center">
@@ -90,7 +88,6 @@ const LoginForm = () => {
 
         <SocialLogin />
       </Form>
-      {contextHolder}
     </>
   );
 };

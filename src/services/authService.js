@@ -20,7 +20,7 @@ export const getUserlogedin = async (data) => {
 
 export const getUserRegistered = async (data) => {
   try {
-    const response = await httpClient.post("/api/v1/auth/register", data);
+    const response = await httpClient.post("/api/v1/users", data);
     return response.data;
   } catch (error) {
     throw error;
