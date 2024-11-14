@@ -1,4 +1,6 @@
 @import "../assets/styles/home-styles.css";
+@import "../assets/styles/supplier-dashboard-styles.css";
+@import "../assets/styles/seller-dashboard-styles.css";
 
 :root {
   --background: #ffffff;
