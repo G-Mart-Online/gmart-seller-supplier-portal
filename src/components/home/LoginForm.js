@@ -3,6 +3,7 @@ import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Flex, Alert, notification } from "antd";
 import SocialLogin from "./SocialLogin";
 import useAuthGuard from "@/utils/useAuthGuard";
+import Link from "next/link";
 
 const LoginForm = ({ handleClose }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,9 @@ const LoginForm = ({ handleClose }) => {
         onError: (errors) => {
           setError(errors);
           console.error("Error occurred while logging in:", errors);
+        },
+        onSuccess: () => {
+          handleClose();
         },
         props: values,
       });
@@ -75,7 +79,7 @@ const LoginForm = ({ handleClose }) => {
             <Form.Item name="remember" valuePropName="checked" noStyle>
               <Checkbox>Remember me</Checkbox>
             </Form.Item>
-            <a href="">Forgot password</a>
+            <Link href="/auth/forgot-password">Forgot password</Link>
           </Flex>
         </Form.Item>
 

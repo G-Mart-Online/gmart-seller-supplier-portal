@@ -17,15 +17,25 @@ const useAuthGuard = ({ middleware, redirectIfAuthenticated }) => {
     mutate,
   } = useSWR("/api/v1/auth/me", () => getAuthenticatedUser());
 
-  const login = async ({ onError, props }) => {
+  const login = async ({ onError, onSuccess, props }) => {
     onError();
     await csrf();
-    getUserlogedin(props)
-      .then(() => mutate())
-      .catch((err) => {
-        const errors = err.response?.data;
-        onError(errors);
-      });
+    try {
+      await getUserlogedin(props);
+      mutate();
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (err) {
+      const errors = err.response?.data;
+      onError(errors);
+    }
+    // getUserlogedin(props)
+    //   .then(() => mutate())
+    //   .catch((err) => {
+    //     const errors = err.response?.data;
+    //     onError(errors);
+    //   });
   };
 
   const csrf = async () => {

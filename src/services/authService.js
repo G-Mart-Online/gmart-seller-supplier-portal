@@ -44,3 +44,28 @@ export const getUserLogedOut = async () => {
     throw error;
   }
 };
+
+export const sendResetEmail = async (data) => {
+  try {
+    const response = await httpClient.post(
+      "api/v1/users/forgot-password",
+      data
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const resetPassword = async (data) => {
+  try {
+    const response = await httpClient.patch(
+      "api/v1/users/reset-password",
+      data
+    );
+    console.log("reset password::", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
