@@ -11,7 +11,16 @@ const SellerProductContent = ({ isLoading, products, error }) => {
   }
 
   if (error) {
-    return <ErrorAlert message="error" description={error.message} />;
+    return (
+      <ErrorAlert
+        message="error"
+        description={
+          error?.response?.data?.message
+            ? error?.response?.data?.message
+            : "An unexpected error occurred. Please try again later."
+        }
+      />
+    );
   }
 
   if (products.length === 0) {

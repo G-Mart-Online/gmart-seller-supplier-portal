@@ -7,7 +7,6 @@ import Link from "next/link";
 import React from "react";
 
 const { Meta } = Card;
-const { Text } = Typography;
 
 const ProductCard = ({ product }) => {
   return (
@@ -33,28 +32,28 @@ const ProductCard = ({ product }) => {
             <Typography type="secondary" className="seller-product-card-desc">
               {product.description}
             </Typography>
-            <Tooltip title={`Retail Price Rs. ${product.retailPrice}`}>
-              <Statistic
-                className="seller-product-card-stat"
-                value={product.retailPrice}
-                precision={2}
-                prefix="Rs."
-                valueStyle={{ color: "#3f8600", fontSize: "14px" }}
-              />
-            </Tooltip>
-            <Tooltip title={`Wholesale Price Rs. ${product.wholesalePrice}`}>
-              <Statistic
-                className="seller-product-card-stat"
-                value={product.wholesalePrice}
-                precision={2}
-                prefix="Rs."
-                suffix="(Wholesale)"
-                valueStyle={{ color: "gray", fontSize: "12px" }}
-              />
-            </Tooltip>
+            {/* <Tooltip title={`Retail Price Rs. ${product.retailPrice}`}> */}
+            <Statistic
+              className="seller-product-card-stat"
+              value={product.retailPrice}
+              precision={2}
+              prefix="Rs."
+              valueStyle={{ color: "#3f8600", fontSize: "14px" }}
+            />
+            {/* </Tooltip> */}
+            {/* <Tooltip title={`Wholesale Price Rs. ${product.wholesalePrice}`}> */}
+            <Statistic
+              className="seller-product-card-stat"
+              value={product.wholesalePrice}
+              precision={2}
+              prefix="Rs."
+              suffix="(Wholesale)"
+              valueStyle={{ color: "gray", fontSize: "12px" }}
+            />
+            {/* </Tooltip> */}
 
             <Tooltip title="View product details">
-              <Link href="/product/[id]" as={`/product/P001`}>
+              <Link href={`products/${product.productId}`}>
                 <Button
                   type="primary"
                   icon={<EyeOutlined />}

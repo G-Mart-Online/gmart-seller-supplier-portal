@@ -1,3 +1,4 @@
+import { Alert } from "antd";
 import React from "react";
 
 const ErrorAlert = ({ message, description, showIcon = true }) => {
