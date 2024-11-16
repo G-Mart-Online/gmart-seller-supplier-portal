@@ -66,3 +66,8 @@
 .seller-product-card-btn {
   width: 100%;
 }
+
+.seller-single-product-carousel-img {
+  object-fit: cover;
+  border-radius: 9px;
+}

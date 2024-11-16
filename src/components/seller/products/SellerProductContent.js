@@ -1,43 +1,36 @@
-import CustomSpin from "@/components/common/CustomSpin";
-import EmptyScreen from "@/components/common/EmptyScreen";
-import ErrorAlert from "@/components/common/ErrorAlert";
-import { Col, Pagination, Row } from "antd";
+import { ProductFilled } from "@ant-design/icons";
+import { Col, Divider, Flex, Row, Typography } from "antd";
 import React from "react";
-import ProductCard from "./ProductCard";
+import SellerPageContainer from "../SellerPageContainer";
+import SingleProductMainContent from "./single-product/SingleProductMainContent";
 
-const SellerProductContent = ({ isLoading, products, error }) => {
-  if (isLoading) {
-    return <CustomSpin />;
-  }
+const { Title } = Typography;
 
-  if (error) {
-    return (
-      <ErrorAlert
-        message="error"
-        description={
-          error?.response?.data?.message
-            ? error?.response?.data?.message
-            : "An unexpected error occurred. Please try again later."
-        }
-      />
-    );
-  }
-
-  if (products.length === 0) {
-    return <EmptyScreen message="No Products" />;
-  }
-
+const SellerProductContent = ({ product }) => {
   return (
-    <Row gutter={[16, 16]} justify="start">
-      {products?.map((product) => (
-        <Col xs={24} sm={12} md={8} lg={6} xl={4} key={product.productId}>
-          <ProductCard product={product} />
+    <>
+      <Row gutter={[16, 16]} justify="start">
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+          <Flex
+            gap="middle"
+            align="center"
+            className="seller-page-title-flex"
+            style={{ height: "100%" }}
+          >
+            <ProductFilled />
+            <Title level={4} style={{ margin: 0 }} copyable>
+              Product Name
+            </Title>
+          </Flex>
         </Col>
-      ))}
-      <Col span={24}>
-        <Pagination align="end" defaultCurrent={1} total={50} />
-      </Col>
-    </Row>
+        <Col span={24}>
+          <Divider />
+        </Col>
+      </Row>
+      <SellerPageContainer
+        childern={<SingleProductMainContent product={product} />}
+      />
+    </>
   );
 };
 
