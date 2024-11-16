@@ -38,3 +38,31 @@
   align-items: center;
 }
 
+.seller-product-card {
+  padding: 10px;
+}
+
+.seller-product-card-img {
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.seller-product-card-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-height: 3em;
+}
+
+.seller-product-card-stat {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  min-height: 1em;
+}
+
+.seller-product-card-btn {
+  width: 100%;
+}
