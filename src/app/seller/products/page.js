@@ -1,7 +1,87 @@
-import React from "react";
+"use client";
 
-const ProductList = () => {
-  return <div>ProductList</div>;
+import SellerProductContent from "@/components/seller/products/SellerProductContent";
+import SellerPageContainer from "@/components/seller/SellerPageContainer";
+import SellerPageTitle from "@/components/seller/SellerPageTitle";
+import { fetchProducts } from "@/services/productService";
+import { ProductFilled } from "@ant-design/icons";
+import { Col, Divider, Input, Row, Select } from "antd";
+import React, { useEffect, useState } from "react";
+
+const { Search } = Input;
+
+const ProductPage = () => {
+  const [products, setProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const onSearch = (value, _e, info) => console.log(info?.source, value);
+
+  const fetchProductsList = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await fetchProducts();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error while fetching products:", error);
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProductsList();
+  }, []);
+
+  return (
+    <>
+      <Row gutter={[16, 16]} justify="start">
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+          <SellerPageTitle icon={<ProductFilled />} pageTitle="Products" />
+        </Col>
+        <Col xs={24} sm={12} md={12} lg={12} xl={6}>
+          <Select
+            onChange={(value) => console.log("category selected::", value)}
+            style={{ width: "100%" }}
+            options={[
+              { value: "category1", label: "Category 1" },
+              { value: "category2", label: "Category 2" },
+              { value: "category3", label: "Category 3" },
+              { value: "category4", label: "Category 4", disabled: true },
+            ]}
+            placeholder="Select a Category"
+            allowClear
+            size="large"
+            loading={isLoading}
+          />
+        </Col>
+        <Col xs={24} sm={24} md={12} lg={12} xl={6}>
+          <Search
+            placeholder="Search Products"
+            allowClear
+            enterButton
+            onSearch={onSearch}
+            size="large"
+            loading={isLoading}
+          />
+        </Col>
+        <Col span={24}>
+          <Divider />
+        </Col>
+      </Row>
+      <SellerPageContainer
+        childern={
+          <SellerProductContent
+            isLoading={isLoading}
+            products={products}
+            error={error}
+          />
+        }
+      />
+    </>
+  );
 };
 
-export default ProductList;
+export default ProductPage;
