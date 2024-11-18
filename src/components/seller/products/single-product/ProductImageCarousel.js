@@ -1,35 +1,14 @@
 import { DownloadOutlined } from "@ant-design/icons";
-import { Button, Carousel, Col, Divider, Flex, Image, Row, Space } from "antd";
+import { Button, Carousel, Col, Divider, Image, Row } from "antd";
 import React, { useRef, useState } from "react";
 
-const contentStyle = {
-  margin: 0,
-  height: "160px",
-  color: "#fff",
-  lineHeight: "160px",
-  textAlign: "center",
-  background: "#364d79",
-};
-
-const ProductImageCarousel = ({ images }) => {
-  const product = {
-    images: [
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "https://images.pexels.com/photos/7290172/pexels-photo-7290172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-    ],
-  };
-
+const ProductImageCarousel = ({ product }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const carouselRef = useRef(null);
 
   const handleThumbnailClick = (index) => {
     setSelectedIndex(index);
-    carouselRef.current.goTo(index); // Navigate to the selected image in the carousel
+    carouselRef.current.goTo(index);
   };
   return (
     <>
@@ -39,7 +18,7 @@ const ProductImageCarousel = ({ images }) => {
         ref={carouselRef}
         afterChange={(current) => setSelectedIndex(current)}
       >
-        {product.images.map((image, index) => (
+        {product?.images?.map((image, index) => (
           <Image
             className="seller-single-product-carousel-img"
             src={image}
@@ -55,7 +34,7 @@ const ProductImageCarousel = ({ images }) => {
           marginTop: "16px",
         }}
       >
-        {product.images.map((image, index) => (
+        {product?.images?.map((image, index) => (
           <Col key={index}>
             <Image
               src={image}

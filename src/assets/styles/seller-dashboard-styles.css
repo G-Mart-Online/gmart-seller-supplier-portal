@@ -71,3 +71,12 @@
   object-fit: cover;
   border-radius: 9px;
 }
+
+.product-detail-label {
+  white-space: "nowrap";
+}
+
+.product-details-para {
+  flex: 1;
+  margin-bottom: 0px;
+}
