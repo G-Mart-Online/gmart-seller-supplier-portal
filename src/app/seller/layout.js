@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
 import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const { Header, Sider, Content } = Layout;
 
@@ -19,6 +20,39 @@ const SellerLayout = ({ children }) => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const menuItems = [
+    {
+      key: "/seller",
+      icon: <DashboardOutlined />,
+      label: "Dashboard",
+    },
+    {
+      key: "/seller/products",
+      icon: <ProductOutlined />,
+      label: "Products",
+    },
+    {
+      key: "/seller/orders",
+      icon: <ShopOutlined />,
+      label: "Orders",
+    },
+    {
+      key: "/seller/profile",
+      icon: <UserOutlined />,
+      label: "Profile",
+    },
+  ];
+
+  const activeMenuItem = menuItems.find(
+    (item) =>
+      pathname === item.key ||
+      (item.key !== "/seller" && pathname.startsWith(`${item.key}/`))
+  )?.key;
+
+  console.log("pathname:: ", activeMenuItem);
   return (
     <Layout className="seller-layout">
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -26,29 +60,9 @@ const SellerLayout = ({ children }) => {
         <Menu
           theme="dark"
           mode="inline"
-          defaultSelectedKeys={["1"]}
-          items={[
-            {
-              key: "1",
-              icon: <DashboardOutlined />,
-              label: "Dashboard",
-            },
-            {
-              key: "2",
-              icon: <ProductOutlined />,
-              label: "Products",
-            },
-            {
-              key: "3",
-              icon: <ShopOutlined />,
-              label: "Orders",
-            },
-            {
-              key: "4",
-              icon: <UserOutlined />,
-              label: "Profile",
-            },
-          ]}
+          selectedKeys={[activeMenuItem]}
+          onClick={(menuInfo) => router.push(menuInfo.key)}
+          items={menuItems}
         />
       </Sider>
       <Layout>
