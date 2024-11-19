@@ -4,6 +4,9 @@
 
 .seller-header {
   padding: 0px;
+  display: flex;
+  justify-content: space-between;
+  
 }
 
 .seller-layout-collapse-btn {
