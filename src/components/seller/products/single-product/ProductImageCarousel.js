@@ -18,7 +18,7 @@ const ProductImageCarousel = ({ product }) => {
         ref={carouselRef}
         afterChange={(current) => setSelectedIndex(current)}
       >
-        {product?.images?.map((image, index) => (
+        {product?.imageUrls?.map((image, index) => (
           <Image
             className="seller-single-product-carousel-img"
             src={image}
