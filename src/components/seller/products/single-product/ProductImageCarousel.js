@@ -34,7 +34,7 @@ const ProductImageCarousel = ({ product }) => {
           marginTop: "16px",
         }}
       >
-        {product?.images?.map((image, index) => (
+        {product?.imageUrls?.map((image, index) => (
           <Col key={index}>
             <Image
               src={image}
