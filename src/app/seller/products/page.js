@@ -1,6 +1,6 @@
 "use client";
 
-import SellerProductContent from "@/components/seller/products/SellerProductContent";
+import SellerProductListContent from "@/components/seller/products/SellerProductListContent";
 import SellerPageContainer from "@/components/seller/SellerPageContainer";
 import SellerPageTitle from "@/components/seller/SellerPageTitle";
 import { fetchProducts } from "@/services/productService";
@@ -73,7 +73,7 @@ const ProductPage = () => {
       </Row>
       <SellerPageContainer
         childern={
-          <SellerProductContent
+          <SellerProductListContent
             isLoading={isLoading}
             products={products}
             error={error}

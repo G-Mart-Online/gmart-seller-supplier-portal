@@ -7,11 +7,8 @@ import CarouselImg1 from "../../../assets/images/carousel_img_1.jpg";
 import CarouselImg2 from "../../../assets/images/carousel_img_2.jpg";
 
 const HomeCarousel = () => {
-  const onChange = (currentSlide) => {
-    console.log(currentSlide);
-  };
   return (
-    <Carousel afterChange={onChange}>
+    <Carousel autoplay arrows>
       <div className="carousel-image-container">
         <Image
           className="carousel-content"

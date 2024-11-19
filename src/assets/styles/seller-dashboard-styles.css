@@ -4,6 +4,9 @@
 
 .seller-header {
   padding: 0px;
+  display: flex;
+  justify-content: space-between;
+  
 }
 
 .seller-layout-collapse-btn {
@@ -65,4 +68,18 @@
 
 .seller-product-card-btn {
   width: 100%;
+}
+
+.seller-single-product-carousel-img {
+  object-fit: cover;
+  border-radius: 9px;
+}
+
+.product-detail-label {
+  white-space: "nowrap";
+}
+
+.product-details-para {
+  flex: 1;
+  margin-bottom: 0px;
 }
