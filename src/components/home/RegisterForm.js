@@ -23,7 +23,6 @@ const RegisterForm = ({ handleClose }) => {
         "A verification email has been sent. Please check your inbox to verify your account."
       );
       setSuccess(true);
-      handleClose();
     } catch (error) {
       console.error("Error occurred while registering: ", error);
       setError(error);
