@@ -29,8 +29,8 @@ const RegisterForm = ({ handleClose }) => {
     } finally {
       setIsLoading(false);
     }
-    console.log("Received values of form: ", values);
   };
+
   return (
     <>
       <Form
