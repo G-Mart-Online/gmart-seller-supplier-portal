@@ -8,3 +8,12 @@ export const fetchProducts = async () => {
     throw error;
   }
 };
+
+export const AddNewProduct = async (data) => {
+  try {
+    const response = await httpClient.post("/api/v1/products", data);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
