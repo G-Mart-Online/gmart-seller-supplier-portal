@@ -24,6 +24,8 @@ const ProductImageCarousel = ({ product }) => {
             src={image}
             alt="product-img"
             key={index}
+            height={300}
+            width={"100%"}
           />
         ))}
       </Carousel>
