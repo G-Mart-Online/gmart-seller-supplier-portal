@@ -7,7 +7,6 @@ import {
   Typography,
   Image,
   Button,
-  Grid,
   message,
   Row,
   Col,
@@ -22,6 +21,7 @@ import SupplierPageTitle from "@/components/supplier/SupplierPageTitle.js";
 import SellerPageContainer from "@/components/seller/SellerPageContainer.js";
 import useAuthGuard from "@/utils/useAuthGuard.js";
 import { AddNewProduct } from "@/services/productService.js";
+import { fetchProductCategories } from "@/services/productCategoryService.js";
 
 const { Title } = Typography;
 
@@ -35,13 +35,13 @@ const getBase64 = (file) =>
 
 const AddProduct = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
-  const [productObj, setProductObj] = useState({});
+  const [categories, setCategories] = useState([]);
   const [previewImage, setPreviewImage] = useState("");
   const [fileList, setFileList] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
 
-  // const { user } = useAuthGuard({ middleware: "auth" });
+  const { user } = useAuthGuard({ middleware: "auth" });
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -136,7 +136,6 @@ const AddProduct = () => {
         return;
       }
 
-      // Validate SEO Tags
       const seoTagsArray = values.seoTags
         ?.split(",")
         .map((tag) => tag.trim())
@@ -149,38 +148,44 @@ const AddProduct = () => {
         return;
       }
 
-      const formData = {
-        ...values,
-        images: imageUrls,
-        video: videoUrl,
-      };
-
-      console.log("Form Submitted:", formData);
-      setProductObj({
-        productName: formData.productName,
-        description: formData.description,
-        stockQuantity: formData.stockQuantity,
-        wholesalePrice: formData.WholePrice,
-        retailPrice: formData.RetailPrice,
+      const productData = {
+        productName: values.productName,
+        description: values.description,
+        stockQuantity: values.stockQuantity,
+        wholesalePrice: values.WholePrice,
+        retailPrice: values.RetailPrice,
         seoTags: seoTagsArray,
         imageUrls: imageUrls,
         videoUrl: videoUrl,
-        supplier: "673ca4cc4de3d11454a7160f",
-        category: "673cb9e12326253fa2743994",
-      });
-      await AddNewProduct(productObj);
+        supplier: user?.id,
+        category: values.productCategory,
+      };
+
+      console.log("pridct data", productData);
+      await AddNewProduct(productData);
 
       message.success("Product added successfully!");
-      // Add your API call or database integration here
     } catch (error) {
       console.error("Error uploading product:", error);
       message.error(error.message);
     }
   };
 
-  // useEffect(() => {
-  //   console.log("THIS IS product:", productObj);
-  // }, [onFinish]);
+  const fetchCategories = async () => {
+    try {
+      const result = await fetchProductCategories();
+      setCategories(result);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      message.error("Failed to fetch categories.");
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  console.log("this is user", user);
 
   const uploadButton = (
     <button
@@ -333,11 +338,10 @@ const AddProduct = () => {
                         .toLowerCase()
                         .localeCompare((optionB?.label ?? "").toLowerCase())
                     }
-                    options={[
-                      { value: "1", label: "Electric" },
-                      { value: "3", label: "HouseHold" },
-                      { value: "4", label: "Clothing" },
-                    ]}
+                    options={categories.map((category) => ({
+                      value: category.categoryId, // categoryId as value
+                      label: category.categoryName, // categoryName as label
+                    }))}
                   />
                 </Form.Item>
                 <Form.Item
@@ -364,7 +368,7 @@ const AddProduct = () => {
                           );
                         }
 
-                        return Promise.resolve(); // Validation passed
+                        return Promise.resolve();
                       },
                     },
                   ]}
@@ -379,6 +383,7 @@ const AddProduct = () => {
                     <Upload
                       listType="picture-card"
                       fileList={fileList}
+                      value={fileList}
                       onPreview={handlePreview}
                       onChange={handleImageChange}
                       beforeUpload={(file) => {
@@ -420,6 +425,7 @@ const AddProduct = () => {
                     )}
                   </div>
                 </Form.Item>
+
                 <Form.Item label="Product Video" name="video">
                   <Upload.Dragger
                     name="file"
@@ -447,12 +453,6 @@ const AddProduct = () => {
                     </p>
                   </Upload.Dragger>
                 </Form.Item>
-
-                {/* <Form.Item style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button type="primary" htmlType="submit" disabled={uploading}>
-          {uploading ? "Uploading..." : "Submit"}
-        </Button>
-      </Form.Item> */}
                 <Form.Item
                   style={{ display: "flex", justifyContent: "flex-end" }}
                 >
