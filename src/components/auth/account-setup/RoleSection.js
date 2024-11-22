@@ -30,9 +30,7 @@ const RoleSection = ({ selectedRole, setSelectedRole }) => {
   return (
     <Row className="account-setup-main-row" gutter={[16, 16]} justify="center">
       <Col span={24}>
-        <Title className="account-setup-title" level={5}>
-          Choose your account type to get started
-        </Title>
+        <Title level={5}>Choose your account type to get started</Title>
       </Col>
 
       {roles.map(({ title, description, role }) => (

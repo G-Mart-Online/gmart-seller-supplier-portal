@@ -18,11 +18,9 @@ const SellerForm = () => {
   };
 
   return (
-    <Row className="account-setup-main-row" gutter={[16, 16]} justify="start">
+    <Row className="account-setup-main-row" gutter={[16, 16]} justify="center">
       <Col span={24}>
-        <Title className="account-setup-title" level={5}>
-          Tell us more about your selling details!
-        </Title>
+        <Title level={5}>Tell us more about your selling details!</Title>
       </Col>
       <Col xs={24} sm={24} md={24} lg={12} xl={12}>
         <Form
@@ -44,7 +42,7 @@ const SellerForm = () => {
               },
             ]}
           >
-            <Input placeholder="input placeholder" />
+            <Input placeholder="Description about seller..." />
           </Form.Item>
           <Form.Item
             name="id-image"

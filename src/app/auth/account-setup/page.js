@@ -1,6 +1,8 @@
 "use client";
+import PendingResult from "@/components/auth/account-setup/PendingResult";
 import RoleSection from "@/components/auth/account-setup/RoleSection";
 import SellerForm from "@/components/auth/account-setup/SellerForm";
+import SuccessResult from "@/components/auth/account-setup/SuccessResult";
 import SupplierForm from "@/components/auth/account-setup/SupplierForm";
 import CustomSpin from "@/components/common/CustomSpin";
 import { ROLES } from "@/constants/constants";
@@ -15,6 +17,7 @@ const AccountSetup = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [isApproved, setIsApproved] = useState(false);
 
   const steps = [
     {
@@ -27,13 +30,13 @@ const AccountSetup = () => {
       ),
     },
     {
-      title: "Second",
+      title: "Onboarding",
       content:
         selectedRole === ROLES.SELLER ? <SellerForm /> : <SupplierForm />,
     },
     {
-      title: "Last",
-      content: "Last-content",
+      title: "Approval",
+      content: isApproved ? <SuccessResult /> : <PendingResult />,
     },
   ];
 
@@ -47,8 +50,8 @@ const AccountSetup = () => {
     key: item.title,
     title: item.title,
   }));
+
   const contentStyle = {
-    lineHeight: "260px",
     textAlign: "center",
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,
@@ -56,51 +59,52 @@ const AccountSetup = () => {
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
     padding: 24,
+    overflow: "auto",
+    maxHeight: "60vh",
   };
 
   if (!user) return <CustomSpin />;
 
   return (
-    <>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Title level={4}>Welcome to GMart!</Title>
-        </Col>
-        <Col span={24}>
-          <Steps current={current} items={items} />
-          <div style={contentStyle}>{steps[current].content}</div>
-          <div
-            style={{
-              marginTop: 24,
-            }}
-          >
-            {current < steps.length - 1 && (
-              <Button type="primary" onClick={() => next()}>
-                Next
-              </Button>
-            )}
-            {current === steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => console.log("Processing complete!")}
-              >
-                Done
-              </Button>
-            )}
-            {current > 0 && (
-              <Button
-                style={{
-                  margin: "0 8px",
-                }}
-                onClick={() => prev()}
-              >
-                Previous
-              </Button>
-            )}
-          </div>
-        </Col>
-      </Row>
-    </>
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <Title level={4}>Welcome to GMart!</Title>
+      </Col>
+      <Col span={24}>
+        <Steps current={current} items={items} />
+        <div style={contentStyle}>{steps[current].content}</div>
+        <div
+          style={{
+            marginTop: 24,
+            marginBottom: 24,
+          }}
+        >
+          {current < steps.length - 1 && (
+            <Button type="primary" onClick={() => next()}>
+              Next
+            </Button>
+          )}
+          {current === steps.length - 1 && (
+            <Button
+              type="primary"
+              onClick={() => console.log("Processing complete!")}
+            >
+              Done
+            </Button>
+          )}
+          {current > 0 && (
+            <Button
+              style={{
+                margin: "0 8px",
+              }}
+              onClick={() => prev()}
+            >
+              Previous
+            </Button>
+          )}
+        </div>
+      </Col>
+    </Row>
   );
 };
 
