@@ -1,7 +1,11 @@
 "use client";
+import RoleSection from "@/components/auth/account-setup/RoleSection";
+import SellerForm from "@/components/auth/account-setup/SellerForm";
+import SupplierForm from "@/components/auth/account-setup/SupplierForm";
 import CustomSpin from "@/components/common/CustomSpin";
+import { ROLES } from "@/constants/constants";
 import useAuthGuard from "@/utils/useAuthGuard";
-import { Button, Col, Row, Spin, Steps, theme, Typography } from "antd";
+import { Button, Col, Row, Steps, theme, Typography } from "antd";
 import React, { useState } from "react";
 
 const { Title } = Typography;
@@ -10,15 +14,22 @@ const AccountSetup = () => {
   const { user } = useAuthGuard({ middleware: "auth" });
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const steps = [
     {
-      title: "First",
-      content: "First-content",
+      title: "Account Type",
+      content: (
+        <RoleSection
+          selectedRole={selectedRole}
+          setSelectedRole={setSelectedRole}
+        />
+      ),
     },
     {
       title: "Second",
-      content: "Second-content",
+      content:
+        selectedRole === ROLES.SELLER ? <SellerForm /> : <SupplierForm />,
     },
     {
       title: "Last",
@@ -44,6 +55,7 @@ const AccountSetup = () => {
     borderRadius: token.borderRadiusLG,
     border: `1px dashed ${token.colorBorder}`,
     marginTop: 16,
+    padding: 24,
   };
 
   if (!user) return <CustomSpin />;
@@ -52,7 +64,7 @@ const AccountSetup = () => {
     <>
       <Row gutter={[16, 16]}>
         <Col span={24}>
-          <Title level={2}>Welcome to GMart!</Title>
+          <Title level={4}>Welcome to GMart!</Title>
         </Col>
         <Col span={24}>
           <Steps current={current} items={items} />
