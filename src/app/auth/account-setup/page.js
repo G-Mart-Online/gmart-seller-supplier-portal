@@ -17,7 +17,7 @@ const AccountSetup = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [selectedRole, setSelectedRole] = useState(null);
-  const [isApproved, setIsApproved] = useState(false);
+  const [isApproved, setIsApproved] = useState(true);
 
   const steps = [
     {
