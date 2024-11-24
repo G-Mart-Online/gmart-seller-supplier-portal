@@ -17,7 +17,15 @@ const AccountSetup = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
   const [selectedRole, setSelectedRole] = useState(null);
-  const [isApproved, setIsApproved] = useState(true);
+  const [isApproved, setIsApproved] = useState(false);
+
+  const next = () => {
+    setCurrent(current + 1);
+  };
+
+  const prev = () => {
+    setCurrent(current - 1);
+  };
 
   const steps = [
     {
@@ -26,6 +34,7 @@ const AccountSetup = () => {
         <RoleSection
           selectedRole={selectedRole}
           setSelectedRole={setSelectedRole}
+          next={next}
         />
       ),
     },
@@ -40,12 +49,6 @@ const AccountSetup = () => {
     },
   ];
 
-  const next = () => {
-    setCurrent(current + 1);
-  };
-  const prev = () => {
-    setCurrent(current - 1);
-  };
   const items = steps.map((item) => ({
     key: item.title,
     title: item.title,

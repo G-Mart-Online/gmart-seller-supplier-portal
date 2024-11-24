@@ -1,10 +1,11 @@
 import { ROLES } from "@/constants/constants";
-import { Card, Col, Row, Typography } from "antd";
+import { RightOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Row, Typography } from "antd";
 import React from "react";
 
 const { Title, Paragraph } = Typography;
 
-const RoleSection = ({ selectedRole, setSelectedRole }) => {
+const RoleSection = ({ selectedRole, setSelectedRole, next }) => {
   const roles = [
     {
       title: "I am a Seller",
@@ -55,6 +56,17 @@ const RoleSection = ({ selectedRole, setSelectedRole }) => {
           </Card>
         </Col>
       ))}
+      <Col span={24}>
+        <Button
+          type="primary"
+          icon={<RightOutlined />}
+          iconPosition="end"
+          onClick={next}
+          disabled={!selectedRole}
+        >
+          Continue
+        </Button>
+      </Col>
     </Row>
   );
 };

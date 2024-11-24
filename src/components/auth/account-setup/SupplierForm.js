@@ -1,4 +1,9 @@
-import { UploadOutlined } from "@ant-design/icons";
+import {
+  FacebookOutlined,
+  InstagramOutlined,
+  TikTokOutlined,
+  UploadOutlined,
+} from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Space, Typography, Upload } from "antd";
 import React from "react";
 
@@ -31,18 +36,6 @@ const SupplierForm = () => {
           onFinish={onFinish}
           className="seller-account-setup-form "
         >
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[
-              {
-                required: true,
-                message: "description is required!",
-              },
-            ]}
-          >
-            <Input placeholder="Description about supplier..." />
-          </Form.Item>
           <Form.Item
             name="companyName"
             label="Company Name"
@@ -220,6 +213,31 @@ const SupplierForm = () => {
               <Input placeholder="Enter province" />
             </Form.Item>
           </Form.Item>
+
+          {/* social links */}
+          <Form.Item label="Social Links">
+            <Form.Item label="Facebook" name={["socialLinks", "facebook"]}>
+              <Input
+                placeholder="Enter Facebook account..."
+                prefix={<FacebookOutlined />}
+              />
+            </Form.Item>
+
+            <Form.Item label="Instagram" name={["socialLinks", "instagram"]}>
+              <Input
+                placeholder="Enter Instagram account"
+                prefix={<InstagramOutlined />}
+              />
+            </Form.Item>
+
+            <Form.Item label="TikTok" name={["socialLinks", "tiktok"]}>
+              <Input
+                placeholder="Enter TikTok account"
+                prefix={<TikTokOutlined />}
+              />
+            </Form.Item>
+          </Form.Item>
+
           <Form.Item labelAlign="left">
             <Space className="seller-account-setup-form-btn-container">
               <Button type="primary" htmlType="submit">
