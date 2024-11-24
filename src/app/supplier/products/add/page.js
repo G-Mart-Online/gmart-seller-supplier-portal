@@ -15,8 +15,6 @@ import {
 import TextArea from "antd/es/input/TextArea";
 import React, { useEffect, useState } from "react";
 import { InboxOutlined, PlusOutlined, ProductFilled } from "@ant-design/icons";
-import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
-import { storage } from ".././../../../utils/firebaseConfig.js";
 import SupplierPageTitle from "@/components/supplier/SupplierPageTitle.js";
 import SellerPageContainer from "@/components/seller/SellerPageContainer.js";
 import useAuthGuard from "@/utils/useAuthGuard.js";
@@ -59,80 +57,10 @@ const AddProduct = () => {
     }
   };
 
-  const handleVideoUpload = async () => {
-    setUploading(true);
-    try {
-      const videoRef = ref(storage, `product-videos/${videoFile.name}`);
-      const uploadTask = uploadBytesResumable(videoRef, videoFile);
-
-      const downloadURL = await new Promise((resolve, reject) => {
-        uploadTask.on(
-          "state_changed",
-          null,
-          (error) => {
-            message.error(`Video upload failed: ${error.message}`);
-            reject(error);
-          },
-          async () => {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve(url);
-          }
-        );
-      });
-
-      message.success("Video uploaded successfully!");
-      return downloadURL;
-    } catch (error) {
-      message.error("Failed to upload the video.");
-      throw error;
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleUpload = async () => {
-    if (fileList.length !== 2) {
-      message.error("Please upload exactly 2 images!");
-      return;
-    }
-
-    const uploadPromises = fileList.map((file) => {
-      const storageRef = ref(storage, `product-images/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file.originFileObj);
-
-      return new Promise((resolve, reject) => {
-        uploadTask.on(
-          "state_changed",
-          null,
-          (error) => {
-            message.error(`Image upload failed: ${error.message}`);
-            reject(error);
-          },
-          async () => {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            resolve(url);
-          }
-        );
-      });
-    });
-
-    try {
-      const urls = await Promise.all(uploadPromises);
-      message.success("All images uploaded successfully!");
-      return urls;
-    } catch (error) {
-      message.error("Failed to upload images.");
-      throw error;
-    }
-  };
-
   const onFinish = async (values) => {
     try {
-      const imageUrls = await handleUpload();
-      const videoUrl = await handleVideoUpload();
-
-      if (imageUrls.length === 0) {
-        message.error("Please upload at least one image.");
+      if (!fileList || fileList.length !== 6) {
+        message.error("Please upload at least 6 images.");
         return;
       }
 
@@ -155,8 +83,13 @@ const AddProduct = () => {
         wholesalePrice: values.WholePrice,
         retailPrice: values.RetailPrice,
         seoTags: seoTagsArray,
-        imageUrls: imageUrls,
-        videoUrl: videoUrl,
+        image1: fileList[0].originFileObj,
+        image2: fileList[1].originFileObj,
+        image3: fileList[2].originFileObj,
+        image4: fileList[3].originFileObj,
+        image5: fileList[4].originFileObj,
+        image6: fileList[5].originFileObj,
+        videoFile: videoFile,
         supplier: user?.id,
         category: values.productCategory,
       };
@@ -184,8 +117,6 @@ const AddProduct = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
-
-  console.log("this is user", user);
 
   const uploadButton = (
     <button
@@ -339,8 +270,8 @@ const AddProduct = () => {
                         .localeCompare((optionB?.label ?? "").toLowerCase())
                     }
                     options={categories.map((category) => ({
-                      value: category.categoryId, // categoryId as value
-                      label: category.categoryName, // categoryName as label
+                      value: category.categoryId,
+                      label: category.categoryName,
                     }))}
                   />
                 </Form.Item>

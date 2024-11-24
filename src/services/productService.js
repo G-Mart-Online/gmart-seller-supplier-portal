@@ -12,7 +12,11 @@ export const fetchProducts = async () => {
 export const AddNewProduct = async (data) => {
   try {
     console.log("This is passed data", data);
-    const response = await httpClient.post("/api/v1/products", data);
+    const response = await httpClient.post("/api/v1/products", data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return response.data;
   } catch (error) {
     if (error.response) {
