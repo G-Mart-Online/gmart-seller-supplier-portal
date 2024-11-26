@@ -76,31 +76,31 @@ const AddProduct = () => {
         return;
       }
 
-      const productData = {
-        productName: values.productName,
-        description: values.description,
-        stockQuantity: values.stockQuantity,
-        wholesalePrice: values.WholePrice,
-        retailPrice: values.RetailPrice,
-        seoTags: seoTagsArray,
-        image1: fileList[0].originFileObj,
-        image2: fileList[1].originFileObj,
-        image3: fileList[2].originFileObj,
-        image4: fileList[3].originFileObj,
-        image5: fileList[4].originFileObj,
-        image6: fileList[5].originFileObj,
-        videoFile: videoFile,
-        supplier: user?.id,
-        category: values.productCategory,
-      };
+      const formData = new FormData();
 
-      console.log("pridct data", productData);
-      await AddNewProduct(productData);
+      fileList.forEach((file, index) => {
+        formData.append("images", file.originFileObj, `image${index}.jpg`);
+      });
+
+      if (videoFile) {
+        formData.append("videoFile", videoFile);
+      }
+
+      formData.append("productName", values.productName);
+      formData.append("description", values.description);
+      formData.append("stockQuantity", values.stockQuantity);
+      formData.append("wholesalePrice", values.WholePrice);
+      formData.append("retailPrice", values.RetailPrice);
+      formData.append("seoTags", JSON.stringify(seoTagsArray)); // Send as JSON string
+      formData.append("supplier", user?.id);
+      formData.append("category", values.productCategory);
+
+      await AddNewProduct(formData);
 
       message.success("Product added successfully!");
     } catch (error) {
       console.error("Error uploading product:", error);
-      message.error(error.message);
+      message.error(error.message || "Failed to upload the product.");
     }
   };
 

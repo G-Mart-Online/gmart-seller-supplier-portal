@@ -11,7 +11,7 @@ export const fetchProducts = async () => {
 
 export const AddNewProduct = async (data) => {
   try {
-    console.log("This is passed data", data);
+    console.log("data in service::", data);
     const response = await httpClient.post("/api/v1/products", data, {
       headers: {
         "Content-Type": "multipart/form-data",
