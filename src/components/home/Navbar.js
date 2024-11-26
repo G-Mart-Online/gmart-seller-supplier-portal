@@ -8,8 +8,11 @@ import "../../assets/styles/home-styles.css";
 import LoginRegisterModal from "./LoginRegisterModal";
 import useAuthGuard from "@/utils/useAuthGuard";
 import AuthUserNav from "../common/AuthUserNav";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
+  const router = useRouter();
+  const pathname = usePathname();
   const { user } = useAuthGuard({ middleware: "guest" });
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
@@ -25,15 +28,15 @@ const Navbar = () => {
 
   const items = [
     {
-      key: "1",
+      key: "/",
       label: "Home",
     },
     {
-      key: "2",
+      key: "/about",
       label: "About",
     },
     {
-      key: "3",
+      key: "/contact",
       label: "Contact",
     },
   ];
@@ -44,9 +47,10 @@ const Navbar = () => {
       <Menu
         theme="light"
         mode="horizontal"
-        defaultSelectedKeys={["2"]}
+        selectedKeys={[pathname]}
         items={items}
         className="menu"
+        onClick={(e) => router.push(e.key)} // Navigate to the clicked route
       />
 
       {!user && (

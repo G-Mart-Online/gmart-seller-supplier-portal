@@ -30,12 +30,6 @@ const useAuthGuard = ({ middleware, redirectIfAuthenticated }) => {
       const errors = err.response?.data;
       onError(errors);
     }
-    // getUserlogedin(props)
-    //   .then(() => mutate())
-    //   .catch((err) => {
-    //     const errors = err.response?.data;
-    //     onError(errors);
-    //   });
   };
 
   const csrf = async () => {

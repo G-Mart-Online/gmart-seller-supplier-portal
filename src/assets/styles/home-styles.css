@@ -35,6 +35,7 @@
   width: 100%;
   height: 500px; /* Define the height of your carousel */
   overflow: hidden; /* Crop overflow to fit the carousel */
+  border-radius: 9px;
 }
 
 .carousel-content {

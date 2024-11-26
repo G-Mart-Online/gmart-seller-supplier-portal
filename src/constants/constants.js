@@ -4,3 +4,10 @@ export const THEME_OPTIONS = {
   boarderRadius: 6,
   borderRadiusLG: 9,
 };
+
+export const ROLES = {
+  ADMIN: "ADMIN",
+  USER: "USER",
+  SELLER: "SELLER",
+  SUPPLIER: "SUPPLIER",
+};
