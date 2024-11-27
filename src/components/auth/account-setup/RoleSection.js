@@ -25,7 +25,6 @@ const RoleSection = ({ selectedRole, setSelectedRole, next }) => {
 
   const handleRoleSelection = (role) => {
     setSelectedRole(role);
-    console.log("role::", role);
   };
 
   return (

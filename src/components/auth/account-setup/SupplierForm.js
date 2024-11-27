@@ -9,7 +9,7 @@ import React from "react";
 
 const { Title } = Typography;
 
-const SupplierForm = () => {
+const SupplierForm = ({ next, prev }) => {
   const normFile = (e) => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {

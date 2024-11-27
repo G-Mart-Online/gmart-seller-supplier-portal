@@ -1,17 +1,21 @@
+import { createSellerAccount } from "@/services/sellerService";
+import useAuthGuard from "@/utils/useAuthGuard";
 import {
   FacebookOutlined,
   InstagramOutlined,
   TikTokOutlined,
   UploadOutlined,
   WhatsAppOutlined,
-  YoutubeOutlined,
 } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Space, Typography, Upload } from "antd";
-import React from "react";
+import React, { useState } from "react";
 
 const { Title } = Typography;
 
-const SellerForm = () => {
+const SellerForm = ({ prev, userId }) => {
+  const { mutate } = useAuthGuard({ middleware: "auth" });
+  const [isLoading, setIsLoading] = useState(false);
+
   const normFile = (e) => {
     console.log("Upload event:", e);
     if (Array.isArray(e)) {
@@ -20,8 +24,16 @@ const SellerForm = () => {
     return e?.fileList;
   };
 
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+  const onFinish = async (values) => {
+    try {
+      setIsLoading(true);
+      const response = await createSellerAccount(userId, values);
+      mutate();
+    } catch (error) {
+      console.error("Error occurred while creating seller account", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -61,12 +73,12 @@ const SellerForm = () => {
             valuePropName="fileList"
             getValueFromEvent={normFile}
             extra="Please upload a clear and high-quality image of your ID card (e.g., license, passport, or other identification). Accepted formats: JPG, PNG."
-            rules={[
-              {
-                required: true,
-                message: "id is required!",
-              },
-            ]}
+            // rules={[
+            //   {
+            //     required: true,
+            //     message: "id is required!",
+            //   },
+            // ]}
           >
             <Upload name="logo" action="/upload.do" listType="picture">
               <Button icon={<UploadOutlined />}>Click to upload</Button>
@@ -154,9 +166,10 @@ const SellerForm = () => {
 
           <Form.Item labelAlign="left">
             <Space className="seller-account-setup-form-btn-container">
-              <Button type="primary" htmlType="submit">
+              <Button type="primary" htmlType="submit" loading={isLoading}>
                 Submit
               </Button>
+              <Button onClick={() => prev()}>Previous</Button>
             </Space>
           </Form.Item>
         </Form>
