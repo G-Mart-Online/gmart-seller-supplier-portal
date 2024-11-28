@@ -20,6 +20,7 @@ import useAuthGuard from "@/utils/useAuthGuard.js";
 import { AddNewProduct } from "@/services/productService.js";
 import { fetchProductCategories } from "@/services/productCategoryService.js";
 import SupplierPageContainer from "@/components/supplier/SupplierPageContainer";
+import useNotification from "@/utils/useNotification";
 
 const { Title } = Typography;
 
@@ -38,6 +39,8 @@ const AddProduct = () => {
   const [fileList, setFileList] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const { openNotification, contextHolder } = useNotification();
+  const [form] = Form.useForm();
 
   const { user } = useAuthGuard({ middleware: "auth" });
 
@@ -51,7 +54,7 @@ const AddProduct = () => {
 
   const handleImageChange = ({ fileList: newFileList }) => {
     if (newFileList.length > 6) {
-      message.error("You can only upload up to 6 images!");
+      openNotification("error", "Error", "You can only upload up to 6 images!");
     } else {
       setFileList(newFileList);
     }
@@ -60,7 +63,7 @@ const AddProduct = () => {
   const onFinish = async (values) => {
     try {
       if (!fileList || fileList.length !== 6) {
-        message.error("Please upload at least 6 images.");
+        openNotification("error", "Error", "Please upload at least 6 images.");
         return;
       }
 
@@ -70,7 +73,9 @@ const AddProduct = () => {
         .filter((tag) => tag !== "");
 
       if (!seoTagsArray || seoTagsArray.length === 0) {
-        message.error(
+        openNotification(
+          "error",
+          "Error",
           "Please provide valid SEO tags as comma-separated values."
         );
         return;
@@ -91,16 +96,21 @@ const AddProduct = () => {
       formData.append("stockQuantity", values.stockQuantity);
       formData.append("wholesalePrice", values.WholePrice);
       formData.append("retailPrice", values.RetailPrice);
-      formData.append("seoTags", JSON.stringify(seoTagsArray)); // Send as JSON string
+      formData.append("seoTags", JSON.stringify(seoTagsArray));
       formData.append("supplier", user?.id);
       formData.append("category", values.productCategory);
 
       await AddNewProduct(formData);
-
-      message.success("Product added successfully!");
+      openNotification("success", "Success", "Product added Successfully");
+      form.resetFields();
+      setFileList([]);
     } catch (error) {
       console.error("Error uploading product:", error);
-      message.error(error.message || "Failed to upload the product.");
+      openNotification(
+        "error",
+        "Error",
+        "An unexpected error occurred while uploading product"
+      );
     }
   };
 
@@ -110,7 +120,7 @@ const AddProduct = () => {
       setCategories(result);
     } catch (error) {
       console.error("Error fetching categories:", error);
-      message.error("Failed to fetch categories.");
+      openNotification("error", "Error", "Failed to fetch categories.");
     }
   };
 
@@ -139,6 +149,7 @@ const AddProduct = () => {
 
   return (
     <>
+      {contextHolder}
       <Row gutter={[16, 16]} justify="start">
         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <SupplierPageTitle icon={<ProductFilled />} pageTitle="Products" />
@@ -153,6 +164,7 @@ const AddProduct = () => {
           <Row gutter={[16, 16]} justify="start">
             <Col span={24}>
               <Form
+                form={form}
                 labelCol={{ span: 8 }}
                 wrapperCol={{ span: 16 }}
                 layout="horizontal"
