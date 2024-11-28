@@ -116,7 +116,7 @@ const SellerForm = ({ prev, userId }) => {
             <Form.Item label="Bank Account Details">
               <Form.Item
                 label="Account Number"
-                name={["bankAccountDetails", "accountNumber"]}
+                name={["bankAccount", "accountNumber"]}
                 rules={[
                   {
                     required: true,
@@ -129,7 +129,7 @@ const SellerForm = ({ prev, userId }) => {
 
               <Form.Item
                 label="Account Holder Name"
-                name={["bankAccountDetails", "accountHolderName"]}
+                name={["bankAccount", "accountHolderName"]}
                 rules={[
                   {
                     required: true,
@@ -142,7 +142,7 @@ const SellerForm = ({ prev, userId }) => {
 
               <Form.Item
                 label="Bank Name"
-                name={["bankAccountDetails", "bankName"]}
+                name={["bankAccount", "bankName"]}
                 rules={[
                   { required: true, message: "Please enter the bank name" },
                 ]}
@@ -152,7 +152,7 @@ const SellerForm = ({ prev, userId }) => {
 
               <Form.Item
                 label="Branch Name"
-                name={["bankAccountDetails", "branchName"]}
+                name={["bankAccount", "branchName"]}
                 rules={[
                   { required: true, message: "Please enter the branch name" },
                 ]}
@@ -162,7 +162,7 @@ const SellerForm = ({ prev, userId }) => {
 
               <Form.Item
                 label="Branch Code"
-                name={["bankAccountDetails", "branchCode"]}
+                name={["bankAccount", "branchCode"]}
                 rules={[
                   { required: true, message: "Please enter the branch code" },
                 ]}
@@ -173,21 +173,24 @@ const SellerForm = ({ prev, userId }) => {
 
             {/* social links */}
             <Form.Item label="Social Links">
-              <Form.Item label="Facebook" name={["socialLinks", "fb"]}>
+              <Form.Item label="Facebook" name={["socialMediaLinks", "fb"]}>
                 <Input
                   placeholder="Enter facebook account..."
                   prefix={<FacebookOutlined />}
                 />
               </Form.Item>
 
-              <Form.Item label="Instagram" name={["socialLinks", "instagram"]}>
+              <Form.Item
+                label="Instagram"
+                name={["socialMediaLinks", "instagram"]}
+              >
                 <Input
                   placeholder="Enter Instagram account"
                   prefix={<InstagramOutlined />}
                 />
               </Form.Item>
 
-              <Form.Item label="TikTok" name={["socialLinks", "tiktok"]}>
+              <Form.Item label="TikTok" name={["socialMediaLinks", "tiktok"]}>
                 <Input
                   placeholder="Enter TikTok account"
                   prefix={<TikTokOutlined />}
