@@ -22,3 +22,33 @@
   justify-content: center;
   align-items: center;
 }
+
+.account-setup-main-row {
+  /* padding: 16px; */
+}
+
+.account-setup-title {
+  text-align: left;
+}
+
+.role-selection-card {
+  border-radius: 9px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.role-selection-card-para {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  min-height: 5em;
+}
+
+.seller-account-setup-form {
+  text-align: left;
+}
+
+.seller-account-setup-form-btn-container {
+  width: 100%;
+}

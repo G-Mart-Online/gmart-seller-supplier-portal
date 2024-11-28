@@ -19,11 +19,11 @@ const LoginSuccess = () => {
 
   useEffect(() => {
     if (counter === 0) {
-      if (user?.role === "USER") {
+      if (user?.role === "USER" || user?.status !== "ACTIVE") {
         router.push("/auth/account-setup");
-      } else if (user?.role === "SELLER") {
+      } else if (user?.role === "SELLER" && user?.status === "ACTIVE") {
         router.push("/seller");
-      } else if (user?.role === "SUPPLIER") {
+      } else if (user?.role === "SUPPLIER" && user?.status === "ACTIVE") {
         router.push("/supplier");
       } else {
         logout();
