@@ -1,12 +1,7 @@
 import { createSupplierAccount } from "@/services/supplierService";
 import useAuthGuard from "@/utils/useAuthGuard";
 import useNotification from "@/utils/useNotification";
-import {
-  FacebookOutlined,
-  InstagramOutlined,
-  TikTokOutlined,
-  UploadOutlined,
-} from "@ant-design/icons";
+import { UploadOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Space, Typography, Upload } from "antd";
 import React, { useState } from "react";
 
@@ -255,30 +250,6 @@ const SupplierForm = ({ next, prev, userId }) => {
                 rules={[{ required: true, message: "Please enter province" }]}
               >
                 <Input placeholder="Enter province" />
-              </Form.Item>
-            </Form.Item>
-
-            {/* social links */}
-            <Form.Item label="Social Links">
-              <Form.Item label="Facebook" name={["socialLinks", "facebook"]}>
-                <Input
-                  placeholder="Enter Facebook account..."
-                  prefix={<FacebookOutlined />}
-                />
-              </Form.Item>
-
-              <Form.Item label="Instagram" name={["socialLinks", "instagram"]}>
-                <Input
-                  placeholder="Enter Instagram account"
-                  prefix={<InstagramOutlined />}
-                />
-              </Form.Item>
-
-              <Form.Item label="TikTok" name={["socialLinks", "tiktok"]}>
-                <Input
-                  placeholder="Enter TikTok account"
-                  prefix={<TikTokOutlined />}
-                />
               </Form.Item>
             </Form.Item>
 

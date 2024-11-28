@@ -173,7 +173,7 @@ const SellerForm = ({ prev, userId }) => {
 
             {/* social links */}
             <Form.Item label="Social Links">
-              <Form.Item label="Facebook" name={["socialLinks", "facebook"]}>
+              <Form.Item label="Facebook" name={["socialLinks", "fb"]}>
                 <Input
                   placeholder="Enter facebook account..."
                   prefix={<FacebookOutlined />}
