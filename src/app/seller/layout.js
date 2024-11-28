@@ -4,12 +4,14 @@ import {
   DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PlusOutlined,
   ProductOutlined,
   ShopOutlined,
+  UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, theme } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import PermissionGuard from "@/components/auth/PermissionGuard";
 import { ROLES } from "@/constants/constants";
@@ -23,6 +25,7 @@ const { Header, Sider, Content } = Layout;
 const SellerLayout = ({ children }) => {
   const { user } = useAuthGuard({ middleware: "auth" });
   const [collapsed, setCollapsed] = useState(false);
+  const [openKeys, setOpenKeys] = useState([]);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -45,6 +48,18 @@ const SellerLayout = ({ children }) => {
       key: "/seller/orders",
       icon: <ShopOutlined />,
       label: "Orders",
+      children: [
+        {
+          key: "/seller/orders/add",
+          icon: <PlusOutlined />,
+          label: "Add Order",
+        },
+        {
+          key: "/seller/orders/manage",
+          icon: <UnorderedListOutlined />,
+          label: "Manage Orders",
+        },
+      ],
     },
     {
       key: "/seller/profile",
@@ -53,11 +68,27 @@ const SellerLayout = ({ children }) => {
     },
   ];
 
-  const activeMenuItem = menuItems.find(
-    (item) =>
-      pathname === item.key ||
-      (item.key !== "/seller" && pathname.startsWith(`${item.key}/`))
-  )?.key;
+  const findActiveKeys = (items, path) => {
+    for (const item of items) {
+      if (item.key === path) return { selectedKey: item.key, parentKey: null };
+      if (item.children) {
+        const childResult = findActiveKeys(item.children, path);
+        if (childResult.selectedKey) {
+          return {
+            selectedKey: childResult.selectedKey,
+            parentKey: item.key,
+          };
+        }
+      }
+    }
+    return { selectedKey: null, parentKey: null };
+  };
+
+  const { selectedKey, parentKey } = findActiveKeys(menuItems, pathname);
+
+  useEffect(() => {
+    if (parentKey) setOpenKeys([parentKey]);
+  }, [parentKey]);
 
   if (!user) return <CustomSpin />;
 
@@ -71,7 +102,9 @@ const SellerLayout = ({ children }) => {
             <Menu
               theme="dark"
               mode="inline"
-              selectedKeys={[activeMenuItem]}
+              selectedKeys={[selectedKey]}
+              openKeys={openKeys}
+              onOpenChange={(keys) => setOpenKeys(keys)}
               onClick={(menuInfo) => router.push(menuInfo.key)}
               items={menuItems}
             />
