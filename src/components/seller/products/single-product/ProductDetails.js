@@ -48,7 +48,7 @@ const ProductDetails = ({ product }) => {
               SEO Tags:
             </Text>
             <Paragraph className="product-details-para" copyable>
-              {product?.seoTags?.join(", ")}
+              {product?.seoTags?.map((item) => item)}
             </Paragraph>
           </Flex>
         </Col>

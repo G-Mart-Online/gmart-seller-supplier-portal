@@ -5,7 +5,15 @@ import { Col, Pagination, Row } from "antd";
 import React from "react";
 import ProductCard from "./ProductCard";
 
-const SellerProductListContent = ({ isLoading, products, error }) => {
+const SellerProductListContent = ({
+  isLoading,
+  products,
+  error,
+  currentPage,
+  pageSize,
+  totalItems,
+  onPageChange,
+}) => {
   if (isLoading) {
     return <CustomSpin />;
   }
@@ -35,7 +43,15 @@ const SellerProductListContent = ({ isLoading, products, error }) => {
         </Col>
       ))}
       <Col span={24}>
-        <Pagination align="end" defaultCurrent={1} total={50} />
+        <Pagination
+          align="end"
+          current={currentPage + 1}
+          pageSize={pageSize}
+          total={totalItems}
+          showSizeChanger
+          onChange={(page, size) => onPageChange(page - 1, size)}
+          pageSizeOptions={["5", "10", "20", "50"]}
+        />
       </Col>
     </Row>
   );
