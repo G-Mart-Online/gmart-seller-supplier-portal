@@ -2,7 +2,8 @@ import CustomSpin from "@/components/common/CustomSpin";
 import EmptyScreen from "@/components/common/EmptyScreen";
 import ErrorAlert from "@/components/common/ErrorAlert";
 import { fetchSuppliers } from "@/services/supplierService";
-import { Flex, Select } from "antd";
+import { formatOptions } from "@/utils/supplierUtils";
+import { Col, Flex, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
 
 const OrderForm = () => {
@@ -10,6 +11,7 @@ const OrderForm = () => {
   const [isSuppliersLoading, setIsSuppliersLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedSupplier, setSelectedSupplier] = useState(null);
+  const [supplierOptions, setSupplierOptions] = useState([]);
 
   const getSuppliersData = async () => {
     try {
@@ -17,6 +19,7 @@ const OrderForm = () => {
       setError(null);
       const data = await fetchSuppliers();
       setSuppliers(data);
+      setSupplierOptions(formatOptions(data, "id", "companyName"));
     } catch (error) {
       console.error("Error while fetching suppliers:", error);
       setError(error);
@@ -24,6 +27,8 @@ const OrderForm = () => {
       setIsSuppliersLoading(false);
     }
   };
+
+  console.log("options::", supplierOptions);
 
   const onChange = (value) => {
     console.log(`selected ${value}`);
@@ -59,29 +64,27 @@ const OrderForm = () => {
 
   return (
     <>
-      <Flex>
-        <Select
-          showSearch
-          placeholder="Select a person"
-          optionFilterProp="label"
-          onChange={onChange}
-          onSearch={onSearch}
-          options={[
-            {
-              value: "jack",
-              label: "Jack",
-            },
-            {
-              value: "lucy",
-              label: "Lucy",
-            },
-            {
-              value: "tom",
-              label: "Tom",
-            },
-          ]}
-        />
-      </Flex>
+      <Row gutter={[16, 16]}>
+        <Col span={24}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Flex>
+              <Select
+                showSearch
+                placeholder="Search a supplier"
+                optionFilterProp="label"
+                defaultOpen
+                autoFocus
+                allowClear
+                onChange={onChange}
+                onSearch={onSearch}
+                options={supplierOptions}
+                style={{ width: "100%" }}
+                size="large"
+              />
+            </Flex>
+          </Col>
+        </Col>
+      </Row>
     </>
   );
 };
