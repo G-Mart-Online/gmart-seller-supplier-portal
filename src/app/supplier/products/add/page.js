@@ -42,7 +42,7 @@ const AddProduct = () => {
   const [fileList, setFileList] = useState([]);
   const [videoFile, setVideoFile] = useState(null);
   const [uploading, setUploading] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { openNotification, contextHolder } = useNotification();
   const [form] = Form.useForm();
 
@@ -367,7 +367,6 @@ const AddProduct = () => {
                         <Upload
                           listType="picture-card"
                           fileList={fileList}
-                          value={fileList}
                           onPreview={handlePreview}
                           onChange={handleImageChange}
                           beforeUpload={(file) => {

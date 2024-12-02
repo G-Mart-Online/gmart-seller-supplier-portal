@@ -20,7 +20,6 @@ export const fetchProductById = async (id) => {
 
 export const AddNewProduct = async (data) => {
   try {
-    console.log("data in service::", data);
     const response = await httpClient.post("/api/v1/products", data, {
       headers: {
         "Content-Type": "multipart/form-data",
