@@ -362,7 +362,11 @@ const AddProduct = () => {
                         placeholder="Add SEO tags as comma-separated values. eg: tag1, tag2, tag3"
                       />
                     </Form.Item>
-                    <Form.Item label="Product Images" name="images">
+                    <Form.Item
+                      label="Product Images"
+                      name="images"
+                      valuePropName="filelist"
+                    >
                       <div>
                         <Upload
                           listType="picture-card"
@@ -410,7 +414,11 @@ const AddProduct = () => {
                       </div>
                     </Form.Item>
 
-                    <Form.Item label="Product Video" name="video">
+                    <Form.Item
+                      label="Product Video"
+                      name="video"
+                      valuePropName={"filelist"}
+                    >
                       <Upload.Dragger
                         name="file"
                         beforeUpload={(file) => {
