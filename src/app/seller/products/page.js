@@ -14,21 +14,31 @@ const ProductPage = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalItems, setTotalItems] = useState(0);
 
   const onSearch = (value, _e, info) => console.log(info?.source, value);
 
-  const fetchProductsList = async () => {
+  const fetchProductsList = async (page = currentPage, size = pageSize) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await fetchProducts();
-      setProducts(data);
+      const data = await fetchProducts(true, true, page, size);
+      setProducts(data?.content || data);
+      setTotalItems(data.totalElements);
+      setCurrentPage(page);
+      setPageSize(size);
     } catch (error) {
       console.error("Error while fetching products:", error);
       setError(error);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handlePageChange = (page, size) => {
+    fetchProductsList(page, size);
   };
 
   useEffect(() => {
@@ -77,6 +87,10 @@ const ProductPage = () => {
             isLoading={isLoading}
             products={products}
             error={error}
+            currentPage={currentPage}
+            pageSize={pageSize}
+            totalItems={totalItems}
+            onPageChange={handlePageChange}
           />
         }
       />
