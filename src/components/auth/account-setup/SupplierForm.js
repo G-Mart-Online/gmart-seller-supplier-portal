@@ -12,18 +12,30 @@ const SupplierForm = ({ next, prev, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { openNotification, contextHolder } = useNotification();
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-
   const onFinish = async (values) => {
     try {
       setIsLoading(true);
-      const response = await createSupplierAccount(userId, values);
+      const formData = new FormData();
+      const supplierData = {
+        companyName: values.companyName,
+        contactPersonName: values.contactPersonName,
+        contactPhone: values.contactPhone,
+        contactEmail: values.contactEmail,
+        bankAccountDetails: values.bankAccountDetails,
+        supplierAddress: values.supplierAddress,
+      };
+
+      formData.append("supplier", JSON.stringify(supplierData));
+
+      if (values.nicImage?.[0]?.originFileObj) {
+        formData.append("nicImage", values.nicImage[0].originFileObj);
+      } else {
+        openNotification("error", "Error", "Please upload your NIC image.");
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await createSupplierAccount(userId, formData);
       mutate();
     } catch (error) {
       openNotification(
@@ -120,19 +132,28 @@ const SupplierForm = ({ next, prev, userId }) => {
             </Form.Item>
 
             <Form.Item
-              name="id-image"
+              name="nicImage"
               label="Upload Your ID Card"
               valuePropName="fileList"
-              getValueFromEvent={normFile}
+              getValueFromEvent={(e) => {
+                if (Array.isArray(e)) {
+                  return e;
+                }
+                return e?.fileList;
+              }}
               extra="Please upload a clear and high-quality image of your ID card (e.g., license, passport, or other identification). Accepted formats: JPG, PNG."
-              // rules={[
-              //   {
-              //     required: true,
-              //     message: "id is required!",
-              //   },
-              // ]}
+              rules={[
+                {
+                  required: true,
+                  message: "ID card image is required!",
+                },
+              ]}
             >
-              <Upload name="logo" action="/upload.do" listType="picture">
+              <Upload
+                listType="picture"
+                maxCount={1}
+                beforeUpload={() => false}
+              >
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>
@@ -211,9 +232,6 @@ const SupplierForm = ({ next, prev, userId }) => {
               <Form.Item
                 label="Address Line 2"
                 name={["supplierAddress", "address2"]}
-                rules={[
-                  { required: true, message: "Please enter address line 2" },
-                ]}
               >
                 <Input placeholder="Enter address line 2" />
               </Form.Item>
