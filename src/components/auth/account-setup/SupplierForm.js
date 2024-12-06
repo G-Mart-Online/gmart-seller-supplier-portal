@@ -147,12 +147,41 @@ const SupplierForm = ({ next, prev, userId }) => {
                   required: true,
                   message: "ID card image is required!",
                 },
+                {
+                  validator: (_, value) => {
+                    const file = value[0]?.originFileObj;
+
+                    if (file) {
+                      const isImage =
+                        file.type === "image/jpeg" ||
+                        file.type === "image/png" ||
+                        file.type === "image/jpg";
+                      if (!isImage) {
+                        return Promise.reject(
+                          "You can only upload JPG or PNG image files!"
+                        );
+                      }
+
+                      const isLt2M = file.size / 1024 / 1024 < 2;
+                      if (!isLt2M) {
+                        return Promise.reject(
+                          "Image must be smaller than 2MB!"
+                        );
+                      }
+                    }
+
+                    return Promise.resolve();
+                  },
+                },
               ]}
             >
               <Upload
                 listType="picture"
                 maxCount={1}
-                beforeUpload={() => false}
+                showUploadList={{ showPreviewIcon: false }}
+                onPreview={(file) => {
+                  return false;
+                }}
               >
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
