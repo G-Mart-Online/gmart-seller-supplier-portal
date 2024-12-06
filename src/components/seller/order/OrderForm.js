@@ -28,18 +28,18 @@ const OrderForm = () => {
     }
   };
 
-  console.log("options::", supplierOptions);
-
   const onChange = (value) => {
     console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
+    setSelectedSupplier(value);
   };
 
   useEffect(() => {
     getSuppliersData();
   }, []);
+
+  useEffect(() => {
+    console.log("selected supplier id::", selectedSupplier);
+  }, [selectedSupplier]);
 
   if (isSuppliersLoading) {
     return <CustomSpin />;
@@ -69,6 +69,7 @@ const OrderForm = () => {
           <Col xs={24} sm={24} md={12} lg={12} xl={12}>
             <Flex>
               <Select
+                className="seller-order-supplier-search"
                 showSearch
                 placeholder="Search a supplier"
                 optionFilterProp="label"
@@ -76,9 +77,7 @@ const OrderForm = () => {
                 autoFocus
                 allowClear
                 onChange={onChange}
-                onSearch={onSearch}
                 options={supplierOptions}
-                style={{ width: "100%" }}
                 size="large"
               />
             </Flex>
