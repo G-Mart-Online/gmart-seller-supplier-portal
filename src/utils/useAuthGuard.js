@@ -33,7 +33,11 @@ const useAuthGuard = ({ middleware, redirectIfAuthenticated }) => {
   };
 
   const csrf = async () => {
-    await getCsrfToken();
+    try {
+      await getCsrfToken();
+    } catch (error) {
+      console.error("Error occurred while getting csrf token", error);
+    }
   };
 
   const logout = async () => {
