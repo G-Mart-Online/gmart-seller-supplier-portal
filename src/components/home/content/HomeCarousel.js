@@ -5,10 +5,19 @@ import "../../../assets/styles/home-styles.css";
 import Image from "next/image";
 import CarouselImg1 from "../../../assets/images/carousel_img_1.jpg";
 import CarouselImg2 from "../../../assets/images/carousel_img_2.jpg";
+import ComingSoonImg from "../../../assets/images/coming-soon-banner.png";
 
 const HomeCarousel = () => {
   return (
     <Carousel autoplay arrows>
+      <div className="carousel-image-container">
+        <Image
+          className="carousel-content"
+          src={ComingSoonImg}
+          alt="Coming Soon Banner"
+          fill
+        />
+      </div>
       <div className="carousel-image-container">
         <Image
           className="carousel-content"
