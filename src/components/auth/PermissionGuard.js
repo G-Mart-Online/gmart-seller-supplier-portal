@@ -1,6 +1,5 @@
 import useAuthGuard from "@/utils/useAuthGuard";
-import { Button, Flex, Result } from "antd";
-import Link from "next/link";
+import { Button, Result } from "antd";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -15,7 +14,7 @@ const PermissionGuard = ({
   const router = useRouter();
   const { user } = useAuthGuard({ middleware: "auth" });
 
-  if (user && allowedRoles.includes(user?.role)) {
+  if (user && allowedRoles.includes(user?.role) && user.status === "ACTIVE") {
     return null;
   }
 

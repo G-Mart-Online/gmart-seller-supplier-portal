@@ -4,7 +4,7 @@ import React from "react";
 const RoleGuard = ({ allowedRoles, children }) => {
   const { user } = useAuthGuard({ middleware: "auth" });
 
-  if (!user || !allowedRoles.includes(user.role)) {
+  if (!user || !allowedRoles.includes(user.role) || user.status !== "ACTIVE") {
     return null;
   }
 
