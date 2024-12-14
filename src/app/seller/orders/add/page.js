@@ -14,10 +14,9 @@ const AddOrderPage = () => {
         <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <SellerPageTitle
             icon={<AppstoreAddOutlined />}
-            pageTitle="Place a New Order"
+            pageTitle="Create Order"
           />
         </Col>
-
         <Col span={24}>
           <Divider />
         </Col>
