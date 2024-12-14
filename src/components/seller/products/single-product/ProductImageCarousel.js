@@ -1,6 +1,7 @@
-import { DownloadOutlined } from "@ant-design/icons";
+import { DownloadOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import { Button, Carousel, Col, Divider, Image, Row } from "antd";
 import React, { useRef, useState } from "react";
+import { saveAs } from "file-saver";
 
 const ProductImageCarousel = ({ product }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -10,6 +11,23 @@ const ProductImageCarousel = ({ product }) => {
     setSelectedIndex(index);
     carouselRef.current.goTo(index);
   };
+
+  const downloadImage = (imageUrl, index) => {
+    // Download image using file-saver
+    fetch(imageUrl)
+      .then((response) => response.blob())
+      .then((blob) => saveAs(blob, `product-image-${index + 1}.jpg`))
+      .catch((error) => console.error("Download error: ", error));
+  };
+
+  const downloadVideo = (videoUrl) => {
+    // Download video using file-saver
+    fetch(videoUrl)
+      .then((response) => response.blob())
+      .then((blob) => saveAs(blob, "product-video.mp4"))
+      .catch((error) => console.error("Download error: ", error));
+  };
+
   return (
     <>
       <Carousel
@@ -24,10 +42,14 @@ const ProductImageCarousel = ({ product }) => {
             src={image}
             alt="product-img"
             key={index}
-            height={300}
+            height={600}
             width={"100%"}
           />
         ))}
+        <video width="100%" height="600" controls>
+          <source src={product.videoUrl} type="video/mp4" />
+          Your browser does not support the video.
+        </video>
       </Carousel>
       <Row
         gutter={[4, 4]}
@@ -58,6 +80,33 @@ const ProductImageCarousel = ({ product }) => {
             />
           </Col>
         ))}
+        {product?.videoUrl && (
+          <Col>
+            <div
+              onClick={() => handleThumbnailClick(product.imageUrls.length)}
+              style={{
+                width: "50px",
+                height: "50px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "4px",
+                cursor: "pointer",
+                border:
+                  selectedIndex === product.imageUrls.length
+                    ? "2px solid #1890ff"
+                    : "1px solid #ddd",
+                transition: "border-color 0.3s",
+                backgroundColor: "#000",
+                color: "#fff",
+                fontSize: "10px",
+                textAlign: "center",
+              }}
+            >
+              <PlayCircleOutlined style={{ fontSize: "20px" }} />
+            </div>
+          </Col>
+        )}
       </Row>
       <Row gutter={[4, 4]} justify="start">
         <Col span={24}>
@@ -66,12 +115,24 @@ const ProductImageCarousel = ({ product }) => {
           </Divider>
         </Col>
         <Col>
-          <Button type="primary" icon={<DownloadOutlined />}>
+          <Button
+            type="primary"
+            icon={<DownloadOutlined />}
+            onClick={() => {
+              product?.imageUrls?.forEach((image, index) => {
+                downloadImage(image, index);
+              });
+            }}
+          >
             Images
           </Button>
         </Col>
         <Col>
-          <Button type="primary" icon={<DownloadOutlined />}>
+          <Button
+            type="primary"
+            icon={<DownloadOutlined />}
+            onClick={() => downloadVideo(product.videoUrl)}
+          >
             Video
           </Button>
         </Col>

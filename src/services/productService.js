@@ -1,17 +1,11 @@
 import httpClient from "./HttpClient";
 
-export const fetchProducts = async (
-  activeStatus,
-  approveStatus,
-  pageNumber,
-  pageSize
-) => {
+export const fetchProducts = async (productStatus, pageNumber, pageSize) => {
   try {
     const response = await httpClient.get("/api/v1/products", {
       params: {
+        productStatus,
         pageNumber,
-        activeStatus,
-        approveStatus,
         pageSize,
       },
     });
