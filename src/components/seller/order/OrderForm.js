@@ -33,7 +33,6 @@ const OrderForm = () => {
     try {
       setIsLoadingProducts(true);
     } catch (error) {
-      
     } finally {
       setIsLoadingProducts(false);
     }
