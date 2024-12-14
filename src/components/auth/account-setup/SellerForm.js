@@ -18,18 +18,27 @@ const SellerForm = ({ prev, userId }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { openNotification, contextHolder } = useNotification();
 
-  const normFile = (e) => {
-    console.log("Upload event:", e);
-    if (Array.isArray(e)) {
-      return e;
-    }
-    return e?.fileList;
-  };
-
   const onFinish = async (values) => {
     try {
       setIsLoading(true);
-      const response = await createSellerAccount(userId, values);
+      const formData = new FormData();
+      const sellerData = {
+        whatsappNumber: values.whatsappNumber,
+        bankAccount: values.bankAccount,
+        socialMediaLinks: values.socialMediaLinks,
+      };
+
+      formData.append("seller", JSON.stringify(sellerData));
+
+      if (values.nicImage?.[0]?.originFileObj) {
+        formData.append("nicImage", values.nicImage[0].originFileObj);
+      } else {
+        openNotification("error", "Error", "Please upload your NIC image.");
+        setIsLoading(false);
+        return;
+      }
+
+      const response = await createSellerAccount(userId, formData);
       mutate();
     } catch (error) {
       openNotification(
@@ -96,19 +105,57 @@ const SellerForm = ({ prev, userId }) => {
               />
             </Form.Item>
             <Form.Item
-              name="nicImageUrl"
+              name="nicImage"
               label="Upload Your ID Card"
               valuePropName="fileList"
-              getValueFromEvent={normFile}
+              getValueFromEvent={(e) => {
+                if (Array.isArray(e)) {
+                  return e;
+                }
+                return e?.fileList;
+              }}
               extra="Please upload a clear and high-quality image of your ID card (e.g., license, passport, or other identification). Accepted formats: JPG, PNG."
-              // rules={[
-              //   {
-              //     required: true,
-              //     message: "id is required!",
-              //   },
-              // ]}
+              rules={[
+                {
+                  required: true,
+                  message: "ID card image is required!",
+                },
+                {
+                  validator: (_, value) => {
+                    const file = value[0]?.originFileObj;
+
+                    if (file) {
+                      const isImage =
+                        file.type === "image/jpeg" ||
+                        file.type === "image/png" ||
+                        file.type === "image/jpg";
+                      if (!isImage) {
+                        return Promise.reject(
+                          "You can only upload JPG or PNG image files!"
+                        );
+                      }
+
+                      const isLt2M = file.size / 1024 / 1024 < 2;
+                      if (!isLt2M) {
+                        return Promise.reject(
+                          "Image must be smaller than 2MB!"
+                        );
+                      }
+                    }
+
+                    return Promise.resolve();
+                  },
+                },
+              ]}
             >
-              <Upload name="logo" action="/upload.do" listType="picture">
+              <Upload
+                listType="picture"
+                maxCount={1}
+                showUploadList={{ showPreviewIcon: false }}
+                onPreview={(file) => {
+                  return false;
+                }}
+              >
                 <Button icon={<UploadOutlined />}>Click to upload</Button>
               </Upload>
             </Form.Item>

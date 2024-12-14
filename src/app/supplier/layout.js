@@ -98,12 +98,11 @@ const SupplierLayout = ({ children }) => {
               <AuthUserNav />
             </Header>
             <Content
+              className="supplier-content"
               style={{
-                margin: "24px 16px",
-                padding: 24,
-                minHeight: 280,
                 background: colorBgContainer,
                 borderRadius: borderRadiusLG,
+                padding: 24,
               }}
             >
               {children}

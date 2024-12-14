@@ -18,7 +18,7 @@ const SellerProductContent = ({ product }) => {
             style={{ height: "100%" }}
           >
             <ProductFilled />
-            <Title level={4} style={{ margin: 0 }} copyable>
+            <Title level={4} style={{ margin: 0 }}>
               {product?.productName}
             </Title>
           </Flex>
