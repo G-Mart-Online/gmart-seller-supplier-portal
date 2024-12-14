@@ -1,5 +1,5 @@
 import { ShopOutlined } from "@ant-design/icons";
-import { Avatar, Col, Divider, Flex, Row, Tag, Typography } from "antd";
+import { Avatar, Col, Divider, Flex, Row, Space, Tag, Typography } from "antd";
 
 import React from "react";
 
@@ -16,7 +16,7 @@ const ProductDetails = ({ product }) => {
           </Flex>
         </Col>
         <Col span={24}>
-          <Typography.Title level={5} copyable>
+          <Typography.Title level={2} copyable style={{ margin: 0 }}>
             {product?.productName}
           </Typography.Title>
         </Col>
@@ -29,36 +29,40 @@ const ProductDetails = ({ product }) => {
           </Text>
         </Col>
         <Col span={24}>
-          <Flex gap="small">
+          <Flex gap="small" vertical>
             <Text type="secondary">Quantity:</Text>
-            <Text copyable>{product?.stockQuantity}</Text>
+            <Text copyable style={{ fontSize: "20px" }}>
+              {product?.stockQuantity}
+            </Text>
           </Flex>
         </Col>
         <Col span={24}>
-          <Flex gap="small">
+          <Flex gap="small" vertical justify="flex-start">
             <Text type="secondary">Category:</Text>
-            <Tag>
-              <Text copyable>{product?.category?.categoryName}</Text>
-            </Tag>
+            <Flex>
+              <Tag color="green">
+                <Text copyable style={{ fontSize: "14px" }}>
+                  {product?.category?.categoryName}
+                </Text>
+              </Tag>
+            </Flex>
           </Flex>
         </Col>
         <Col span={24}>
-          <Flex gap="small">
+          <Flex gap="small" vertical>
             <Text className="product-detail-label" type="secondary">
               SEO Tags:
             </Text>
-            <Paragraph className="product-details-para" copyable>
-              {product?.seoTags?.map((item) => item)}
-            </Paragraph>
+            <Flex wrap gap="small">
+              {product?.seoTags?.map((tag, index) => (
+                <Tag key={index} color="blue" style={{ cursor: "pointer" }}>
+                  <Text copyable style={{ fontSize: "14px" }}>
+                    {tag}
+                  </Text>
+                </Tag>
+              ))}
+            </Flex>
           </Flex>
-        </Col>
-        <Col span={24}>
-          <Divider orientation="left" plain>
-            Product Description
-          </Divider>
-        </Col>
-        <Col>
-          <Paragraph>{product?.description}</Paragraph>
         </Col>
       </Row>
     </>
