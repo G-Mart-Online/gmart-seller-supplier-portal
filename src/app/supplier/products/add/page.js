@@ -98,13 +98,16 @@ const AddProduct = () => {
       formData.append("productName", values.productName);
       formData.append("description", values.description);
       formData.append("stockQuantity", values.stockQuantity);
+      formData.append("wholeSaleMinQuantity", values.wholeSaleMinQuantity);
       formData.append("wholesalePrice", values.WholePrice);
       formData.append("retailPrice", values.RetailPrice);
-      formData.append("seoTags", JSON.stringify(seoTagsArray));
+      //formData.append("seoTags", JSON.stringify(seoTagsArray));
+      formData.append("seoTags", seoTagsArray);
       formData.append("supplier", user?.id);
       formData.append("category", values.productCategory);
 
       setLoading(true);
+      console.log("Form Data:", formData.get("seoTags"));
       await AddNewProduct(formData);
       openNotification("success", "Success", "Product added Successfully");
       form.resetFields();
@@ -265,6 +268,37 @@ const AddProduct = () => {
                               return Promise.reject(
                                 new Error(
                                   "Wholesale price must be a valid float (e.g., 100.00, 999.99)."
+                                )
+                              );
+                            }
+                            return Promise.resolve();
+                          },
+                        },
+                      ]}
+                    >
+                      <Input />
+                    </Form.Item>
+                    <Form.Item
+                      label="Wholesale minimum quantity"
+                      name="wholeSaleMinQuantity"
+                      rules={[
+                        {
+                          required: true,
+                          message: "Please input stock quantity!",
+                        },
+                        {
+                          validator: (_, value) => {
+                            if (!value) {
+                              return Promise.reject(
+                                new Error(
+                                  "WholeSale minimum quantity is required."
+                                )
+                              );
+                            }
+                            if (!/^\d+$/.test(value)) {
+                              return Promise.reject(
+                                new Error(
+                                  "Wholesale sale minimum quantity must be a valid integer."
                                 )
                               );
                             }
@@ -445,6 +479,7 @@ const AddProduct = () => {
                         </p>
                       </Upload.Dragger>
                     </Form.Item>
+
                     <Form.Item
                       style={{ display: "flex", justifyContent: "flex-end" }}
                     >
