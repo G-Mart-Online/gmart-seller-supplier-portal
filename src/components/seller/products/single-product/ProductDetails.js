@@ -21,7 +21,9 @@ const ProductDetails = ({ product }) => {
           </Typography.Title>
         </Col>
         <Col span={24}>
-          <Text type="secondary">{product?.supplier?.firstName}</Text>
+          <Text type="secondary">
+            {product?.supplier?.firstName + " " + product?.supplier?.lastName}
+          </Text>
         </Col>
         <Col span={24}>
           <Text style={{ fontSize: "24px" }} copyable>
