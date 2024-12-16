@@ -101,7 +101,6 @@ const AddProduct = () => {
       formData.append("wholeSaleMinQuantity", values.wholeSaleMinQuantity);
       formData.append("wholesalePrice", values.WholePrice);
       formData.append("retailPrice", values.RetailPrice);
-      //formData.append("seoTags", JSON.stringify(seoTagsArray));
       formData.append("seoTags", seoTagsArray);
       formData.append("supplier", user?.id);
       formData.append("category", values.productCategory);
