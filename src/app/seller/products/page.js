@@ -24,7 +24,7 @@ const ProductPage = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await fetchProducts("Active", page, size);
+      const data = await fetchProducts("ACTIVE", page, size);
       setProducts(data?.content || data);
       setTotalItems(data.totalElements);
       setCurrentPage(page);

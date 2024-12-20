@@ -44,3 +44,24 @@ export const AddNewProduct = async (data) => {
     }
   }
 };
+
+export const fetchProductsBySupplier = async (
+  productStatus,
+  pageNumber,
+  pageSize,
+  supplierId
+) => {
+  try {
+    const response = await httpClient.get("/api/v1/products/supplier", {
+      params: {
+        productStatus,
+        pageNumber,
+        pageSize,
+        supplierId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

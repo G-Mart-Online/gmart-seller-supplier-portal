@@ -20,7 +20,6 @@ export const createSupplierAccount = async (userId, formData) => {
 export const fetchSuppliers = async () => {
   try {
     const response = await httpClient("/api/v1/suppliers");
-    console.log("suppliers::response::", response);
     return response.data;
   } catch (error) {
     throw error;
