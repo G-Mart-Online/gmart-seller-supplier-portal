@@ -179,7 +179,7 @@ const OrderForm = () => {
         ...orderDetails,
         orderItems: orderDetails.orderItems.map((item) => ({
           productId: item.productId,
-          quantity: String(item.quantity),
+          quantity: item.quantity,
         })),
         orderType: orderDetails.orderType.toUpperCase(),
       };
