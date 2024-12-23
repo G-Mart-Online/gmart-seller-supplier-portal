@@ -52,3 +52,7 @@
 .seller-account-setup-form-btn-container {
   width: 100%;
 }
+
+.column-padding-zero {
+  padding: 0;
+}
