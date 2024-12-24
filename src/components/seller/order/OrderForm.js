@@ -88,6 +88,14 @@ const EditableCell = ({
                     )
                   );
                 }
+
+                if (value > record.stockQuantity) {
+                  return Promise.reject(
+                    new Error(
+                      `Quantity cannot exceed available stock (${record.stockQuantity}).`
+                    )
+                  );
+                }
                 return Promise.resolve();
               },
             },
@@ -254,8 +262,7 @@ const OrderForm = () => {
     {
       title: "Product Name",
       dataIndex: "name",
-      width: "40%",
-      fixed: "left",
+      width: "100",
       render: (_, record) => (
         <Flex gap="small" align="center">
           <Image
@@ -285,7 +292,7 @@ const OrderForm = () => {
     {
       title: "Amount",
       dataIndex: "amount",
-      width: "20%",
+      width: "100",
       render: (amount) => `Rs. ${amount.toFixed(2)}`,
     },
     {
@@ -315,10 +322,10 @@ const OrderForm = () => {
               Edit
             </Typography.Link>
             <Popconfirm
-              title="Delete?"
+              title="Remove?"
               onConfirm={() => handleDelete(record.productId)}
             >
-              <Typography.Link style={{ color: "red" }}>Delete</Typography.Link>
+              <Typography.Link style={{ color: "red" }}>Remove</Typography.Link>
             </Popconfirm>
           </Flex>
         );
@@ -416,6 +423,7 @@ const OrderForm = () => {
         wholeSaleMinQuantity: selectedProduct.wholeSaleMinQuantity,
         retailPrice: selectedProduct.retailPrice,
         wholesalePrice: selectedProduct.wholesalePrice,
+        stockQuantity: selectedProduct.stockQuantity,
         quantity:
           orderDetails.orderType === "Wholesale"
             ? selectedProduct.wholeSaleMinQuantity
@@ -443,30 +451,14 @@ const OrderForm = () => {
   };
 
   const handleOrderTypeChange = (value) => {
-    const updatedOrderItems = orderDetails.orderItems.map((item) => {
-      const defaultQuantity =
-        value === "Wholesale" ? item.wholeSaleMinQuantity : 1;
-      const unitPrice =
-        value === "Wholesale" ? item.wholesalePrice : item.retailPrice;
-      const amount = unitPrice * defaultQuantity;
-
-      return {
-        ...item,
-        quantity: defaultQuantity,
-        unitPrice,
-        amount,
-      };
-    });
-
     setOrderDetails((prev) => ({
       ...prev,
-      orderType: value,
-      orderItems: updatedOrderItems,
+      orderItems: [],
     }));
 
     form.setFieldsValue({
       orderType: value,
-      orderItems: updatedOrderItems,
+      orderItems: [],
     });
   };
 
@@ -486,9 +478,27 @@ const OrderForm = () => {
 
   useEffect(() => {
     if (products) {
-      setProductOptions(formatOptions(products, "productId", "productName"));
+      const updatedOptions = products.map((product) => {
+        const isAlreadyInOrder = orderDetails.orderItems.some(
+          (item) => item.productId === product.productId
+        );
+
+        const isDisabled =
+          isAlreadyInOrder ||
+          product.stockQuantity <= 1 ||
+          (orderDetails.orderType === "Wholesale" &&
+            product.stockQuantity < product.wholeSaleMinQuantity);
+
+        return {
+          label: product.productName,
+          value: product.productId,
+          disabled: isDisabled,
+        };
+      });
+
+      setProductOptions(updatedOptions);
     }
-  }, [products]);
+  }, [products, orderDetails]);
 
   if (isSuppliersLoading) {
     return <CustomSpin />;
