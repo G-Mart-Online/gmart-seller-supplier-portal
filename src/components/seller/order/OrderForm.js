@@ -263,7 +263,6 @@ const OrderForm = () => {
       title: "Product Name",
       dataIndex: "name",
       width: "100",
-      // fixed: "left",
       render: (_, record) => (
         <Flex gap="small" align="center">
           <Image
