@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Button, Carousel, Col, Divider, Image, Row } from "antd";
+import { Button, Carousel, Col, Image, Row } from "antd";
 import { DownloadOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
@@ -131,12 +131,7 @@ const ProductImageCarousel = ({ product }) => {
           </Col>
         )}
       </Row>
-      <Row gutter={[4, 4]} justify="start">
-        <Col span={24}>
-          <Divider orientation="left" plain>
-            Actions
-          </Divider>
-        </Col>
+      <Row gutter={[4, 4]} justify="start" style={{ paddingTop: "20px" }}>
         <Col>
           <Button
             type="primary"
