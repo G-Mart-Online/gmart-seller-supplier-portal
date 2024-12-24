@@ -88,6 +88,14 @@ const EditableCell = ({
                     )
                   );
                 }
+
+                if (value > record.stockQuantity) {
+                  return Promise.reject(
+                    new Error(
+                      `Quantity cannot exceed available stock (${record.stockQuantity}).`
+                    )
+                  );
+                }
                 return Promise.resolve();
               },
             },
@@ -315,10 +323,10 @@ const OrderForm = () => {
               Edit
             </Typography.Link>
             <Popconfirm
-              title="Delete?"
+              title="Remove?"
               onConfirm={() => handleDelete(record.productId)}
             >
-              <Typography.Link style={{ color: "red" }}>Delete</Typography.Link>
+              <Typography.Link style={{ color: "red" }}>Remove</Typography.Link>
             </Popconfirm>
           </Flex>
         );
@@ -416,6 +424,7 @@ const OrderForm = () => {
         wholeSaleMinQuantity: selectedProduct.wholeSaleMinQuantity,
         retailPrice: selectedProduct.retailPrice,
         wholesalePrice: selectedProduct.wholesalePrice,
+        stockQuantity: selectedProduct.stockQuantity,
         quantity:
           orderDetails.orderType === "Wholesale"
             ? selectedProduct.wholeSaleMinQuantity
