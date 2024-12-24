@@ -1,7 +1,10 @@
-import { DownloadOutlined, PlayCircleOutlined } from "@ant-design/icons";
-import { Button, Carousel, Col, Divider, Image, Row } from "antd";
 import React, { useRef, useState } from "react";
+import { Button, Carousel, Col, Divider, Image, Row } from "antd";
+import { DownloadOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { ref, getDownloadURL } from "firebase/storage";
+import { storage } from "../../../../config/firebaseConfig";
 
 const ProductImageCarousel = ({ product }) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -12,20 +15,40 @@ const ProductImageCarousel = ({ product }) => {
     carouselRef.current.goTo(index);
   };
 
-  const downloadImage = (imageUrl, index) => {
-    // Download image using file-saver
-    fetch(imageUrl)
-      .then((response) => response.blob())
-      .then((blob) => saveAs(blob, `product-image-${index + 1}.jpg`))
-      .catch((error) => console.error("Download error: ", error));
+  const downloadImagesAsZip = async () => {
+    const zip = new JSZip();
+    const folder = zip.folder("product-images");
+    const promises = product?.imageUrls?.map(async (imagePath, index) => {
+      const storageRef = ref(storage, imagePath);
+      const url = await getDownloadURL(storageRef);
+
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      folder.file(`image-${index + 1}.jpg`, blob);
+    });
+
+    try {
+      await Promise.all(promises);
+      const content = await zip.generateAsync({ type: "blob" });
+      saveAs(content, "product-images.zip");
+    } catch (err) {
+      console.error("Failed to download images as zip:", err);
+    }
   };
 
-  const downloadVideo = (videoUrl) => {
-    // Download video using file-saver
-    fetch(videoUrl)
-      .then((response) => response.blob())
-      .then((blob) => saveAs(blob, "product-video.mp4"))
-      .catch((error) => console.error("Download error: ", error));
+  const downloadVideo = async () => {
+    try {
+      const storageRef = ref(storage, product.videoUrl);
+      const url = await getDownloadURL(storageRef);
+
+      const response = await fetch(url);
+      const blob = await response.blob();
+
+      saveAs(blob, "product-video.mp4");
+    } catch (error) {
+      console.error("Failed to download video:", error);
+    }
   };
 
   return (
@@ -118,22 +141,18 @@ const ProductImageCarousel = ({ product }) => {
           <Button
             type="primary"
             icon={<DownloadOutlined />}
-            onClick={() => {
-              product?.imageUrls?.forEach((image, index) => {
-                downloadImage(image, index);
-              });
-            }}
+            onClick={downloadImagesAsZip}
           >
-            Images
+            Download Images
           </Button>
         </Col>
         <Col>
           <Button
             type="primary"
             icon={<DownloadOutlined />}
-            onClick={() => downloadVideo(product.videoUrl)}
+            onClick={downloadVideo}
           >
-            Video
+            Download Video
           </Button>
         </Col>
       </Row>
