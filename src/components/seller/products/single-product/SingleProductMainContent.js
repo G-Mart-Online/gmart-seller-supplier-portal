@@ -3,7 +3,7 @@ import React from "react";
 import ProductImageCarousel from "./ProductImageCarousel";
 import ProductDetails from "./ProductDetails";
 
-const { Paragraph } = Typography;
+const { Title, Paragraph } = Typography;
 
 const SingleProductMainContent = ({ product }) => {
   return (
@@ -16,12 +16,12 @@ const SingleProductMainContent = ({ product }) => {
       </Col>
       <Col span={24}>
         <Divider orientation="left" plain>
-          Description
+          <Title level={4} style={{ margin: 0 }}>
+            Product Description
+          </Title>
         </Divider>
-      </Col>
-      <Col span={24}>
-        <Paragraph copyable style={{ fontSize: "16px" }}>
-          {product?.description}
+        <Paragraph style={{ fontSize: "16px", lineHeight: "1.6em" }} copyable>
+          {product?.description || "No description available for this product."}
         </Paragraph>
       </Col>
     </Row>
