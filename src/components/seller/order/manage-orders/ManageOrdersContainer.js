@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Tag, Typography, Button, Row, Col, Tooltip } from "antd";
+import { Table, Tag, Typography, Button, Row, Col, Tooltip, Alert } from "antd";
 
 const { Text } = Typography;
 
@@ -10,6 +10,7 @@ const ManageOrdersContainer = ({
   currentPage,
   pageSize,
   onPageChange,
+  error,
 }) => {
   const columns = [
     {
@@ -104,21 +105,32 @@ const ManageOrdersContainer = ({
   return (
     <Row justify="center">
       <Col span={24}>
-        <Table
-          dataSource={orders}
-          columns={columns}
-          rowKey={(record) => record.orderId}
-          loading={isLoading}
-          pagination={{
-            current: currentPage,
-            pageSize: pageSize,
-            total: totalItems,
-            onChange: (page, size) => onPageChange(page, size),
-            showSizeChanger: true,
-          }}
-          scroll={{ x: 800 }}
-          bordered
-        />
+        {error ? (
+          <Alert
+            message="Error"
+            description={error}
+            type="error"
+            showIcon
+            closable
+            banner
+          />
+        ) : (
+          <Table
+            dataSource={orders}
+            columns={columns}
+            rowKey={(record) => record.orderId}
+            loading={isLoading}
+            pagination={{
+              current: currentPage,
+              pageSize: pageSize,
+              total: totalItems,
+              onChange: (page, size) => onPageChange(page, size),
+              showSizeChanger: true,
+            }}
+            scroll={{ x: 800 }}
+            bordered
+          />
+        )}
       </Col>
     </Row>
   );

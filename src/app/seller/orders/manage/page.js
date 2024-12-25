@@ -2,10 +2,7 @@
 import ManageOrdersContainer from "@/components/seller/order/manage-orders/ManageOrdersContainer";
 import SellerPageContainer from "@/components/seller/SellerPageContainer";
 import SellerPageTitle from "@/components/seller/SellerPageTitle";
-import {
-  fetchOrdersBySeller,
-  fetchOrdersBySupplier,
-} from "@/services/orderService";
+import { fetchOrdersBySeller } from "@/services/orderService";
 import useAuthGuard from "@/utils/useAuthGuard";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import { Col, Divider, Row } from "antd";
@@ -30,8 +27,12 @@ const ManageOrderPage = () => {
       setCurrentPage(page);
       setPageSize(size);
     } catch (error) {
-      console.error("Error while fetching products:", error);
-      setError(error);
+      console.error("Error while fetching orders:", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong.";
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
@@ -67,6 +68,7 @@ const ManageOrderPage = () => {
             currentPage={currentPage}
             pageSize={pageSize}
             onPageChange={handlePageChange}
+            error={error}
           />
         }
       />
