@@ -24,3 +24,13 @@ export const fetchOrdersBySeller = async (sellerId, pageNumber, pageSize) => {
     throw error;
   }
 };
+
+export const fetchOrderById = async (id) => {
+  try {
+    const response = await httpClient(`api/v1/orders/${id}`);
+    console.log("response::", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
