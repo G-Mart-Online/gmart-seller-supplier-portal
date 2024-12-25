@@ -2,6 +2,7 @@
 
 import CustomSpin from "@/components/common/CustomSpin";
 import ErrorAlert from "@/components/common/ErrorAlert";
+import SellerOrderContent from "@/components/seller/order/manage-orders/single-order/SellerOrderContent";
 import { fetchOrderById } from "@/services/orderService";
 import React, { useEffect, useState } from "react";
 
@@ -48,7 +49,7 @@ const OrderPage = ({ params }) => {
     );
   }
 
-  return <div>OrderPage</div>;
+  return <SellerOrderContent order={order} />;
 };
 
 export default OrderPage;

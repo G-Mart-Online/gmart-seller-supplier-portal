@@ -18,7 +18,7 @@ const SellerOrderContent = ({ order }) => {
           >
             <ProductFilled />
             <Title level={4} style={{ margin: 0 }}>
-              {product?.productName}
+              {order?.orderNumber}
             </Title>
           </Flex>
         </Col>
