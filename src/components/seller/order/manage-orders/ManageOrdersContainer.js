@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, Tag, Typography, Button, Row, Col, Tooltip, Alert } from "antd";
+import Link from "next/link";
 
 const { Text } = Typography;
 
@@ -14,9 +15,9 @@ const ManageOrdersContainer = ({
 }) => {
   const columns = [
     {
-      title: "Order ID",
-      dataIndex: "orderId",
-      key: "orderId",
+      title: "Order No",
+      dataIndex: "orderNumber",
+      key: "orderNumber",
       render: (text) => <Text ellipsis>{text}</Text>,
     },
     {
@@ -95,9 +96,9 @@ const ManageOrdersContainer = ({
       key: "action",
       fixed: "right",
       render: (_, record) => (
-        <Button type="link" onClick={() => console.log("record::", record)}>
-          View
-        </Button>
+        <Link href={`manage/${record.orderId}`}>
+          <Button type="link">View</Button>
+        </Link>
       ),
     },
   ];
