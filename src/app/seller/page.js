@@ -40,6 +40,8 @@ const SellerDashboard = () => {
     }
   }, [user]);
 
+  console.log("data::", sellerStats);
+
   if (error) {
     return <ErrorAlert message="Error" description={error} />;
   }
