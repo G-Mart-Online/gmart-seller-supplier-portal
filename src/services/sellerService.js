@@ -29,3 +29,21 @@ export const fetchSellerDashboardDetails = async (sellerId) => {
     throw error;
   }
 };
+
+export const fetchSalesSummaryForSeller = async (sellerId, timeFrame) => {
+  try {
+    const response = await httpClient.get(
+      `api/v1/sellers/dashboard-details/product-summary`,
+      {
+        params: {
+          sellerId,
+          timeFrame,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
