@@ -8,3 +8,28 @@ export const createOrder = async (data) => {
     throw error;
   }
 };
+
+export const fetchOrdersBySeller = async (sellerId, pageNumber, pageSize) => {
+  try {
+    const response = await httpClient.get("/api/v1/orders/by-seller", {
+      params: {
+        sellerId,
+        pageNumber,
+        pageSize,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
+};
+
+export const fetchOrderById = async (id) => {
+  try {
+    const response = await httpClient(`api/v1/orders/${id}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

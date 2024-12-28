@@ -16,3 +16,34 @@ export const createSellerAccount = async (userId, formData) => {
     throw error;
   }
 };
+
+export const fetchSellerDashboardDetails = async (sellerId) => {
+  try {
+    const response = await httpClient.get(`api/v1/sellers/dashboard-details`, {
+      params: {
+        sellerId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSalesSummaryForSeller = async (sellerId, timeFrame) => {
+  try {
+    const response = await httpClient.get(
+      `api/v1/sellers/dashboard-details/product-summary`,
+      {
+        params: {
+          sellerId,
+          timeFrame,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

@@ -25,3 +25,13 @@ export const fetchSuppliers = async () => {
     throw error;
   }
 };
+
+export const fetchSupplierById = async (supplierId) => {
+  try {
+    const response = await httpClient(`/api/v1/suppliers/${supplierId}`);
+    console.log("response::", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
