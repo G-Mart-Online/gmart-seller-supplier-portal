@@ -2,6 +2,7 @@ import SellerPageContainer from "@/components/seller/SellerPageContainer";
 import { ProductFilled } from "@ant-design/icons";
 import { Col, Divider, Flex, Row, Typography } from "antd";
 import React from "react";
+import OrderDetails from "./OrderDetails";
 
 const { Title } = Typography;
 
@@ -26,7 +27,7 @@ const SellerOrderContent = ({ order }) => {
           <Divider />
         </Col>
       </Row>
-      <SellerPageContainer childern={<>Hello from product</>} />
+      <SellerPageContainer childern={<OrderDetails order={order} />} />
     </>
   );
 };

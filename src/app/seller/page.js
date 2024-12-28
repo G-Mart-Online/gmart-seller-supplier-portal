@@ -2,10 +2,14 @@
 import ErrorAlert from "@/components/common/ErrorAlert";
 import DashboardMainContent from "@/components/seller/dashboard/DashboardMainContent";
 import SellerPageContainer from "@/components/seller/SellerPageContainer";
-import { fetchSellerDashboardDetails } from "@/services/sellerService";
+import {
+  fetchSalesSummaryForSeller,
+  fetchSellerDashboardDetails,
+} from "@/services/sellerService";
 import useAuthGuard from "@/utils/useAuthGuard";
 import { DashboardOutlined } from "@ant-design/icons";
 import { Col, Divider, Flex, Row, Typography } from "antd";
+import { useAntdStylish } from "antd-style";
 import React, { useEffect, useState } from "react";
 
 const { Title } = Typography;
@@ -15,6 +19,10 @@ const SellerDashboard = () => {
   const [sellerStats, setSellerStats] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [salesSummary, setSalesSummary] = useState(null);
+  const [isSalesSummaryLoading, setIsSalesSummaryLoading] = useState(true);
+  const [salesSummaryError, setSalesSummaryError] = useState(null);
+  const [salesSummaryTimeFrame, setSalesSummaryTimeFrame] = useState("date");
 
   const getSellerStatsForSeller = async (sellerId) => {
     try {
@@ -34,11 +42,36 @@ const SellerDashboard = () => {
     }
   };
 
+  const getSalesSummaryForSeller = async (sellerId, timeFrame) => {
+    try {
+      setIsSalesSummaryLoading(true);
+      setSalesSummaryError(null);
+      const data = await fetchSalesSummaryForSeller(sellerId, timeFrame);
+      console.log("data::", data);
+      setSalesSummary(data);
+    } catch (error) {
+      console.error("Error while fetching sales summary for seller", error);
+      const errorMessage =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong while fetching sales summary.";
+      setSalesSummaryError(errorMessage);
+    } finally {
+      setIsSalesSummaryLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (user) {
       getSellerStatsForSeller(user.id);
     }
   }, [user]);
+
+  useEffect(() => {
+    if (user && salesSummaryTimeFrame) {
+      getSalesSummaryForSeller(user.id, salesSummaryTimeFrame);
+    }
+  }, [user, salesSummaryTimeFrame]);
 
   if (error) {
     return <ErrorAlert message="Error" description={error} />;
