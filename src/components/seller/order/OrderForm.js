@@ -199,6 +199,16 @@ const OrderForm = () => {
       );
       resetOrderDetails();
       setIsModalOpen(false);
+      if (response?.sessionUrl) {
+        setTimeout(() => {
+          window.location.href = response.sessionUrl;
+        }, 1500);
+      } else {
+        setOrderCreationError(
+          error.response?.data?.message || "Redirection URL not found"
+        );
+        console.error("Redirection URL not found");
+      }
     } catch (error) {
       setOrderCreationError(
         error.response?.data?.message ||
