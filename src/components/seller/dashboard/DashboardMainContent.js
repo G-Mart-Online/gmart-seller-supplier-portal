@@ -76,7 +76,16 @@ const DashboardMainContent = ({
           isLoading={isLoading}
         />
       </Col>
-      <Col span={24}>
+      <Col xs={24} sm={24} md={24} lg={16} xl={16}>
+        <SalesSummaryChart
+          salesSummary={salesSummary}
+          isSalesSummaryLoading={isSalesSummaryLoading}
+          salesSummaryError={salesSummaryError}
+          salesSummaryTimeFrame={salesSummaryTimeFrame}
+          setSalesSummaryTimeFrame={setSalesSummaryTimeFrame}
+        />
+      </Col>
+      <Col xs={24} sm={24} md={12} lg={8} xl={8}>
         <SupplierList
           header={
             <Title level={5} type="secondary">
@@ -85,15 +94,6 @@ const DashboardMainContent = ({
           }
           suppliers={sellerStats.topSuppliers}
           isLoading={isLoading}
-        />
-      </Col>
-      <Col span={24}>
-        <SalesSummaryChart
-          salesSummary={salesSummary}
-          isSalesSummaryLoading={isSalesSummaryLoading}
-          salesSummaryError={salesSummaryError}
-          salesSummaryTimeFrame={salesSummaryTimeFrame}
-          setSalesSummaryTimeFrame={setSalesSummaryTimeFrame}
         />
       </Col>
     </Row>

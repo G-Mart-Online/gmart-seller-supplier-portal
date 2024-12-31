@@ -18,7 +18,7 @@ const SellerDashboard = () => {
   const [sellerStats, setSellerStats] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [salesSummary, setSalesSummary] = useState(null);
+  const [salesSummary, setSalesSummary] = useState([]);
   const [isSalesSummaryLoading, setIsSalesSummaryLoading] = useState(true);
   const [salesSummaryError, setSalesSummaryError] = useState(null);
   const [salesSummaryTimeFrame, setSalesSummaryTimeFrame] = useState("date");

@@ -1,7 +1,6 @@
-import CustomSpin from "@/components/common/CustomSpin";
 import ErrorAlert from "@/components/common/ErrorAlert";
 import { Line } from "@ant-design/plots";
-import { Col, Flex, Row, Segmented, Typography } from "antd";
+import { Card, Col, Flex, Row, Segmented, Typography } from "antd";
 import React from "react";
 
 const { Title } = Typography;
@@ -13,12 +12,24 @@ const SalesSummaryChart = ({
   salesSummaryTimeFrame,
   setSalesSummaryTimeFrame,
 }) => {
-  const timeFrameMapping = {
-    Daily: "date",
-    Weekly: "week",
-    Monthly: "month",
-    Yearly: "year",
-  };
+  const timeFrameOptions = [
+    {
+      label: "Daily",
+      value: "date",
+    },
+    {
+      label: "Weekly",
+      value: "week",
+    },
+    {
+      label: "Monthly",
+      value: "month",
+    },
+    {
+      label: "Yearly",
+      value: "year",
+    },
+  ];
 
   const formattedData = salesSummary?.map((item) => {
     if (salesSummaryTimeFrame === "date") {
@@ -48,31 +59,25 @@ const SalesSummaryChart = ({
   }
 
   return (
-    <>
+    <Card title="Sales Summary" loading={isSalesSummaryLoading}>
       <Row>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-          <Title type="secondary" level={4}>
-            Sales Summary
-          </Title>
-        </Col>
-        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+        <Col span={24}>
           <Flex justify="flex-end">
             <Segmented
               size="small"
-              options={["Daily", "Weekly", "Monthly", "Yearly"]}
+              options={timeFrameOptions}
               onChange={(value) => {
-                const timeFrame = timeFrameMapping[value];
-                setSalesSummaryTimeFrame(timeFrame);
+                setSalesSummaryTimeFrame(value);
               }}
-              defaultValue="Daily"
+              defaultValue={salesSummaryTimeFrame}
             />
           </Flex>
         </Col>
         <Col span={24}>
-          {isSalesSummaryLoading ? <CustomSpin /> : <Line {...config} />}
+          <Line {...config} />
         </Col>
       </Row>
-    </>
+    </Card>
   );
 };
 
