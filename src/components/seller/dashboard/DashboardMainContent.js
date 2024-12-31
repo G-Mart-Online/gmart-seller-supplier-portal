@@ -3,10 +3,19 @@ import React from "react";
 import DashboardStatCard from "./DashboardStatCard";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import SupplierList from "./SupplierList";
+import SalesSummaryChart from "./SalesSummaryChart";
 
 const { Title } = Typography;
 
-const DashboardMainContent = ({ sellerStats, isLoading }) => {
+const DashboardMainContent = ({
+  sellerStats,
+  isLoading,
+  salesSummary,
+  isSalesSummaryLoading,
+  salesSummaryError,
+  salesSummaryTimeFrame,
+  setSalesSummaryTimeFrame,
+}) => {
   return (
     <Row gutter={[16, 16]} justify={"start"}>
       <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -67,10 +76,19 @@ const DashboardMainContent = ({ sellerStats, isLoading }) => {
           isLoading={isLoading}
         />
       </Col>
-      <Col span={24}>
+      <Col xs={24} sm={24} md={24} lg={16} xl={16}>
+        <SalesSummaryChart
+          salesSummary={salesSummary}
+          isSalesSummaryLoading={isSalesSummaryLoading}
+          salesSummaryError={salesSummaryError}
+          salesSummaryTimeFrame={salesSummaryTimeFrame}
+          setSalesSummaryTimeFrame={setSalesSummaryTimeFrame}
+        />
+      </Col>
+      <Col xs={24} sm={24} md={12} lg={8} xl={8}>
         <SupplierList
           header={
-            <Title level={5} type="secondary">
+            <Title level={5} type="secondary" style={{ margin: 0 }}>
               Your Top Suppliers
             </Title>
           }

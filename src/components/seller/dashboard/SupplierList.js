@@ -16,7 +16,7 @@ const SupplierList = ({ header, suppliers, isLoading }) => {
       itemLayout="vertical"
       size="large"
       header={header}
-      bordered={true}
+      bordered
       dataSource={suppliers}
       loading={isLoading}
       renderItem={(item) => (

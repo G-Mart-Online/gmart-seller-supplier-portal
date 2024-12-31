@@ -9,7 +9,6 @@ import {
 import useAuthGuard from "@/utils/useAuthGuard";
 import { DashboardOutlined } from "@ant-design/icons";
 import { Col, Divider, Flex, Row, Typography } from "antd";
-import { useAntdStylish } from "antd-style";
 import React, { useEffect, useState } from "react";
 
 const { Title } = Typography;
@@ -19,7 +18,7 @@ const SellerDashboard = () => {
   const [sellerStats, setSellerStats] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [salesSummary, setSalesSummary] = useState(null);
+  const [salesSummary, setSalesSummary] = useState([]);
   const [isSalesSummaryLoading, setIsSalesSummaryLoading] = useState(true);
   const [salesSummaryError, setSalesSummaryError] = useState(null);
   const [salesSummaryTimeFrame, setSalesSummaryTimeFrame] = useState("date");
@@ -47,7 +46,6 @@ const SellerDashboard = () => {
       setIsSalesSummaryLoading(true);
       setSalesSummaryError(null);
       const data = await fetchSalesSummaryForSeller(sellerId, timeFrame);
-      console.log("data::", data);
       setSalesSummary(data);
     } catch (error) {
       console.error("Error while fetching sales summary for seller", error);
@@ -102,6 +100,11 @@ const SellerDashboard = () => {
           <DashboardMainContent
             sellerStats={sellerStats}
             isLoading={isLoading}
+            salesSummary={salesSummary}
+            isSalesSummaryLoading={isSalesSummaryLoading}
+            salesSummaryError={salesSummaryError}
+            salesSummaryTimeFrame={salesSummaryTimeFrame}
+            setSalesSummaryTimeFrame={setSalesSummaryTimeFrame}
           />
         }
       />

@@ -33,7 +33,7 @@ export const fetchSellerDashboardDetails = async (sellerId) => {
 export const fetchSalesSummaryForSeller = async (sellerId, timeFrame) => {
   try {
     const response = await httpClient.get(
-      `api/v1/sellers/dashboard-details/product-summary`,
+      `api/v1/sellers/dashboard-details/sales-summary`,
       {
         params: {
           sellerId,
@@ -41,7 +41,6 @@ export const fetchSalesSummaryForSeller = async (sellerId, timeFrame) => {
         },
       }
     );
-
     return response.data;
   } catch (error) {
     throw error;
