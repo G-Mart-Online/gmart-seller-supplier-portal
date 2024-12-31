@@ -3,10 +3,19 @@ import React from "react";
 import DashboardStatCard from "./DashboardStatCard";
 import { ArrowUpOutlined } from "@ant-design/icons";
 import SupplierList from "./SupplierList";
+import SalesSummaryChart from "./SalesSummaryChart";
 
 const { Title } = Typography;
 
-const DashboardMainContent = ({ sellerStats, isLoading }) => {
+const DashboardMainContent = ({
+  sellerStats,
+  isLoading,
+  salesSummary,
+  isSalesSummaryLoading,
+  salesSummaryError,
+  salesSummaryTimeFrame,
+  setSalesSummaryTimeFrame,
+}) => {
   return (
     <Row gutter={[16, 16]} justify={"start"}>
       <Col xs={24} sm={12} md={8} lg={6} xl={6}>
@@ -76,6 +85,15 @@ const DashboardMainContent = ({ sellerStats, isLoading }) => {
           }
           suppliers={sellerStats.topSuppliers}
           isLoading={isLoading}
+        />
+      </Col>
+      <Col span={24}>
+        <SalesSummaryChart
+          salesSummary={salesSummary}
+          isSalesSummaryLoading={isSalesSummaryLoading}
+          salesSummaryError={salesSummaryError}
+          salesSummaryTimeFrame={salesSummaryTimeFrame}
+          setSalesSummaryTimeFrame={setSalesSummaryTimeFrame}
         />
       </Col>
     </Row>
