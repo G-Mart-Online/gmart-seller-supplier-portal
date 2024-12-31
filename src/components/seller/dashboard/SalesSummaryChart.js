@@ -59,7 +59,14 @@ const SalesSummaryChart = ({
   }
 
   return (
-    <Card title="Sales Summary" loading={isSalesSummaryLoading}>
+    <Card
+      title={
+        <Title level={5} type="secondary" style={{ margin: 0 }}>
+          Sales Summary
+        </Title>
+      }
+      loading={isSalesSummaryLoading}
+    >
       <Row>
         <Col span={24}>
           <Flex justify="flex-end">

@@ -88,7 +88,7 @@ const DashboardMainContent = ({
       <Col xs={24} sm={24} md={12} lg={8} xl={8}>
         <SupplierList
           header={
-            <Title level={5} type="secondary">
+            <Title level={5} type="secondary" style={{ margin: 0 }}>
               Your Top Suppliers
             </Title>
           }
