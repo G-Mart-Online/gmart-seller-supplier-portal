@@ -29,7 +29,39 @@ export const fetchSuppliers = async () => {
 export const fetchSupplierById = async (supplierId) => {
   try {
     const response = await httpClient(`/api/v1/suppliers/${supplierId}`);
-    console.log("response::", response);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSupplierDashboardDetails = async (supplierId) => {
+  try {
+    const response = await httpClient.get(
+      `api/v1/suppliers/dashboard-details`,
+      {
+        params: {
+          supplierId,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchSalesSummaryForSupplier = async (supplierId, timeFrame) => {
+  try {
+    const response = await httpClient.get(
+      `api/v1/suppliers/dashboard-details/sales-summary`,
+      {
+        params: {
+          supplierId,
+          timeFrame,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
     throw error;
