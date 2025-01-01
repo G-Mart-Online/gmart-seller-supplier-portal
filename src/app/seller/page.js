@@ -34,7 +34,7 @@ const SellerDashboard = () => {
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
-        "Something went wrong while fetching seller details.";
+        "Something went wrong while getting details.";
       setError(errorMessage);
     } finally {
       setIsLoading(false);
