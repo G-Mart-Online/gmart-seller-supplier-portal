@@ -16,7 +16,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Badge, Button, Flex, Layout, Menu, theme, Typography } from "antd";
+import { Button, Flex, Layout, Menu, theme } from "antd";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import LogoImg from "../../assets/images/logo.png";
@@ -115,13 +115,13 @@ const SupplierLayout = ({ children }) => {
               </Flex>
             </div>
             <Menu
-              // theme="light"
               mode="inline"
               selectedKeys={[selectedKey]}
               openKeys={openKeys}
               onOpenChange={(keys) => setOpenKeys(keys)}
               onClick={(menuInfo) => router.push(menuInfo.key)}
               items={menuItems}
+              defaultOpenKeys={["/supplier/manage-products"]}
             />
           </Sider>
           <Layout>
