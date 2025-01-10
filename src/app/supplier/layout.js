@@ -10,19 +10,24 @@ import {
   DashboardOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
+  PlusOutlined,
   ProductOutlined,
   ShopOutlined,
+  UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Badge, Button, Flex, Layout, Menu, theme, Typography } from "antd";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import LogoImg from "../../assets/images/logo.png";
+import React, { useEffect, useState } from "react";
 
 const { Header, Sider, Content } = Layout;
 
 const SupplierLayout = ({ children }) => {
   const { user } = useAuthGuard({ middleware: "auth" });
   const [collapsed, setCollapsed] = useState(false);
+  const [openKeys, setOpenKeys] = useState([]);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -37,9 +42,21 @@ const SupplierLayout = ({ children }) => {
       label: "Dashboard",
     },
     {
-      key: "/supplier/products",
+      key: "/supplier/manage-products",
       icon: <ProductOutlined />,
       label: "Products",
+      children: [
+        {
+          key: "/supplier/products/add",
+          icon: <PlusOutlined />,
+          label: "Add Product",
+        },
+        {
+          key: "/supplier/products",
+          icon: <UnorderedListOutlined />,
+          label: "Products",
+        },
+      ],
     },
     {
       key: "/supplier/orders",
@@ -53,11 +70,27 @@ const SupplierLayout = ({ children }) => {
     },
   ];
 
-  const activeMenuItem = menuItems.find(
-    (item) =>
-      pathname === item.key ||
-      (item.key !== "/supplier" && pathname.startsWith(`${item.key}/`))
-  )?.key;
+  const findActiveKeys = (items, path) => {
+    for (const item of items) {
+      if (item.key === path) return { selectedKey: item.key, parentKey: null };
+      if (item.children) {
+        const childResult = findActiveKeys(item.children, path);
+        if (childResult.selectedKey) {
+          return {
+            selectedKey: childResult.selectedKey,
+            parentKey: item.key,
+          };
+        }
+      }
+    }
+    return { selectedKey: null, parentKey: null };
+  };
+
+  const { selectedKey, parentKey } = findActiveKeys(menuItems, pathname);
+
+  useEffect(() => {
+    if (parentKey) setOpenKeys([parentKey]);
+  }, [parentKey]);
 
   if (!user) return <CustomSpin />;
 
@@ -66,12 +99,27 @@ const SupplierLayout = ({ children }) => {
       <PermissionGuard allowedRoles={[ROLES.SUPPLIER]} link="/" />
       <RoleGuard allowedRoles={[ROLES.SUPPLIER]}>
         <Layout className="supplier-layout">
-          <Sider trigger={null} collapsible collapsed={collapsed}>
-            <div className="demo-logo-vertical"></div>
+          <Sider trigger={null} collapsible collapsed={collapsed} theme="light">
+            <div className="demo-logo-vertical">
+              <Flex
+                justify="center"
+                align="center"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "black",
+                  borderRadius: "9px",
+                }}
+              >
+                <Image src={LogoImg} alt="gmart-logo" width={40} height={40} />
+              </Flex>
+            </div>
             <Menu
-              theme="dark"
+              // theme="light"
               mode="inline"
-              selectedKeys={[activeMenuItem]}
+              selectedKeys={[selectedKey]}
+              openKeys={openKeys}
+              onOpenChange={(keys) => setOpenKeys(keys)}
               onClick={(menuInfo) => router.push(menuInfo.key)}
               items={menuItems}
             />
