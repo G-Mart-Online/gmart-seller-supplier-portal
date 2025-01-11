@@ -53,3 +53,18 @@ export const fetchOrdersBySupplier = async (
     throw error;
   }
 };
+
+export const updateOrderStatus = async (orderId, status) => {
+  try {
+    const response = await httpClient.put(
+      `/api/v1/orders/update-status/${orderId}`,
+      {},
+      {
+        params: { status },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
