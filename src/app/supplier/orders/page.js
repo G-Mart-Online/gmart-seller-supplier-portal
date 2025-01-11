@@ -6,7 +6,7 @@ import SupplierPageTitle from "@/components/supplier/SupplierPageTitle";
 import { fetchOrdersBySupplier } from "@/services/orderService";
 import useAuthGuard from "@/utils/useAuthGuard";
 import { AppstoreAddOutlined } from "@ant-design/icons";
-import { Col, Divider, Row } from "antd";
+import { Col, Divider, Flex, Row, Select } from "antd";
 import React, { useEffect, useState } from "react";
 
 const OrderPage = () => {
@@ -17,12 +17,41 @@ const OrderPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
+  const [orderStatus, setOrderStatus] = useState(null);
+
+  const orderStatusfilterOptions = [
+    {
+      value: "CREATED",
+      label: "Created",
+    },
+    {
+      value: "CONFIRMED",
+      label: "Confirmed",
+    },
+    {
+      value: "SHIPPED",
+      label: "Shipped",
+    },
+    {
+      value: "DELIVERED",
+      label: "Delivered",
+    },
+    {
+      value: "CANCELLED",
+      label: "Cancelled",
+    },
+  ];
 
   const fetchOrderList = async (page = currentPage, size = pageSize) => {
     try {
       setIsLoading(true);
       setError(null);
-      const data = await fetchOrdersBySupplier(user.id, page - 1, size);
+      const data = await fetchOrdersBySupplier(
+        user.id,
+        page - 1,
+        size,
+        orderStatus
+      );
       setOrders(data?.content || data);
       setTotalItems(data.totalElements);
       setCurrentPage(page);
@@ -43,7 +72,7 @@ const OrderPage = () => {
     if (user) {
       fetchOrderList();
     }
-  }, [user]);
+  }, [user, orderStatus]);
 
   const handlePageChange = (page, size) => {
     fetchOrderList(page, size);
@@ -57,6 +86,18 @@ const OrderPage = () => {
             icon={<AppstoreAddOutlined />}
             pageTitle="Orders"
           />
+        </Col>
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+          <Flex justify="flex-end">
+            <Select
+              style={{ width: 200 }}
+              placeholder="Filter by Status"
+              optionFilterProp="label"
+              options={orderStatusfilterOptions}
+              allowClear={true}
+              onChange={(value) => setOrderStatus(value)}
+            />
+          </Flex>
         </Col>
 
         <Col span={24}>
