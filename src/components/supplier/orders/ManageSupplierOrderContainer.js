@@ -1,10 +1,14 @@
-import React from "react";
-import { Table, Tag, Typography, Button, Row, Col, Tooltip, Alert } from "antd";
+import {
+  getOrderStatusTagColor,
+  getOrderTypeTagColor,
+} from "@/utils/orderUtils";
+import { Alert, Button, Col, Row, Table, Tag, Tooltip, Typography } from "antd";
 import Link from "next/link";
+import React from "react";
 
 const { Text } = Typography;
 
-const ManageOrdersContainer = ({
+const ManageSupplierOrderContainer = ({
   orders,
   isLoading,
   totalItems,
@@ -21,35 +25,25 @@ const ManageOrdersContainer = ({
       render: (text) => <Text ellipsis>{text}</Text>,
     },
     {
-      title: "Supplier",
+      title: "Customer",
       dataIndex: "supplier",
       key: "supplier",
-      render: (supplier) => supplier.companyName,
+      render: (seller) => (
+        <Text ellipsis>{seller.firstName + " " + seller.lastName}</Text>
+      ),
     },
     {
       title: "Order Type",
       dataIndex: "orderType",
       key: "orderType",
-      render: (type) => (
-        <Tag color={type === "WHOLESALE" ? "blue" : "green"}>{type}</Tag>
-      ),
+      render: (type) => <Tag color={getOrderTypeTagColor(type)}>{type}</Tag>,
     },
     {
       title: "Order Status",
       dataIndex: "orderStatus",
       key: "orderStatus",
       render: (status) => (
-        <Tag
-          color={
-            status === "CREATED"
-              ? "orange"
-              : status === "COMPLETED"
-              ? "green"
-              : "red"
-          }
-        >
-          {status}
-        </Tag>
+        <Tag color={getOrderStatusTagColor(status)}>{status}</Tag>
       ),
     },
     {
@@ -96,13 +90,12 @@ const ManageOrdersContainer = ({
       key: "action",
       fixed: "right",
       render: (_, record) => (
-        <Link href={`manage/${record.orderId}`}>
+        <Link href={`orders/${record.orderId}`}>
           <Button type="link">View</Button>
         </Link>
       ),
     },
   ];
-
   return (
     <Row justify="center">
       <Col span={24}>
@@ -136,4 +129,4 @@ const ManageOrdersContainer = ({
   );
 };
 
-export default ManageOrdersContainer;
+export default ManageSupplierOrderContainer;

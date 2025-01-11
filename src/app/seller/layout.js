@@ -10,7 +10,7 @@ import {
   UnorderedListOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, Layout, Menu, theme } from "antd";
+import { Button, Flex, Layout, Menu, theme } from "antd";
 import React, { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import PermissionGuard from "@/components/auth/PermissionGuard";
@@ -19,6 +19,8 @@ import RoleGuard from "@/components/auth/RoleGuard";
 import useAuthGuard from "@/utils/useAuthGuard";
 import CustomSpin from "@/components/common/CustomSpin";
 import AuthUserNav from "@/components/common/AuthUserNav";
+import LogoImg from "../../assets/images/logo.png";
+import Image from "next/image";
 
 const { Header, Sider, Content } = Layout;
 
@@ -97,10 +99,22 @@ const SellerLayout = ({ children }) => {
       <PermissionGuard allowedRoles={[ROLES.SELLER]} link="/" />
       <RoleGuard allowedRoles={[ROLES.SELLER]}>
         <Layout className="seller-layout">
-          <Sider trigger={null} collapsible collapsed={collapsed}>
-            <div className="demo-logo-vertical"></div>
+          <Sider trigger={null} collapsible collapsed={collapsed} theme="light">
+            <div className="demo-logo-vertical">
+              <Flex
+                justify="center"
+                align="center"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  backgroundColor: "black",
+                  borderRadius: "9px",
+                }}
+              >
+                <Image src={LogoImg} alt="gmart-logo" width={40} height={40} />
+              </Flex>
+            </div>
             <Menu
-              theme="dark"
               mode="inline"
               selectedKeys={[selectedKey]}
               openKeys={openKeys}
