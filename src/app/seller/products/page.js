@@ -4,12 +4,19 @@ import SellerProductListContent from "@/components/seller/products/SellerProduct
 import SellerPageContainer from "@/components/seller/SellerPageContainer";
 import SellerPageTitle from "@/components/seller/SellerPageTitle";
 import { fetchProductCategories } from "@/services/productCategoryService";
-import { fetchProducts } from "@/services/productService";
-import { ProductFilled } from "@ant-design/icons";
-import { Col, Divider, Input, Row, Select } from "antd";
-import React, { useEffect, useState } from "react";
-
-const { Search } = Input;
+import {
+  fetchProducts,
+  fetchProductSearchResults,
+} from "@/services/productService";
+import {
+  LoadingOutlined,
+  ProductFilled,
+  SearchOutlined,
+} from "@ant-design/icons";
+import { Col, Divider, Flex, Row, Select, Spin } from "antd";
+import { debounce } from "lodash";
+import { useRouter } from "next/navigation";
+import React, { useCallback, useEffect, useState } from "react";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -23,8 +30,9 @@ const ProductPage = () => {
   const [isCategoryFilterDissable, setIsCategoryFilterDissable] =
     useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const [serachOptions, setSearchOptions] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const router = useRouter();
 
   const fetchCategoryList = async () => {
     try {
@@ -61,6 +69,22 @@ const ProductPage = () => {
     }
   };
 
+  const debouncedFetch = useCallback(
+    debounce(async (searchTerm) => {
+      if (!searchTerm) return;
+      setIsSearching(true);
+      try {
+        const data = await fetchProductSearchResults(searchTerm);
+        setSearchOptions(data || []);
+      } catch (error) {
+        console.error("Error fetching search results:", error);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300),
+    []
+  );
+
   const handleCategoryChange = (value) => {
     const selectedCategoryObject = categories.find(
       (category) => category.categoryId === value
@@ -68,6 +92,14 @@ const ProductPage = () => {
     setSelectedCategory(selectedCategoryObject);
     fetchProductsList(0, pageSize, value);
     setCurrentPage(0);
+  };
+
+  const handleSearch = (value) => {
+    debouncedFetch(value);
+  };
+
+  const handleSearchOptionSelect = (value) => {
+    router.push(`products/${value}`);
   };
 
   const handlePageChange = (page, size) => {
@@ -101,13 +133,30 @@ const ProductPage = () => {
           />
         </Col>
         <Col xs={24} sm={24} md={12} lg={12} xl={6}>
-          <Search
+          <Select
+            showSearch
             placeholder="Search Products"
-            allowClear
-            enterButton
-            onSearch={onSearch}
+            style={{ width: "100%" }}
             size="large"
-            loading={isLoading}
+            suffixIcon={<SearchOutlined />}
+            filterOption={false}
+            onSearch={handleSearch}
+            onSelect={handleSearchOptionSelect}
+            options={(serachOptions || []).map((result) => ({
+              value: result.productId,
+              label: result.productName,
+            }))}
+            notFoundContent={
+              isSearching ? (
+                <Flex justify="center" align="center">
+                  <Spin size="small" indicator={<LoadingOutlined spin />} />
+                </Flex>
+              ) : (
+                <Flex justify="center" align="center">
+                  No results found
+                </Flex>
+              )
+            }
           />
         </Col>
         <Col span={24}>
