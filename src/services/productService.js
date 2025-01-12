@@ -1,12 +1,18 @@
 import httpClient from "./HttpClient";
 
-export const fetchProducts = async (productStatus, pageNumber, pageSize) => {
+export const fetchProducts = async (
+  productStatus,
+  pageNumber,
+  pageSize,
+  category = null
+) => {
   try {
     const response = await httpClient.get("/api/v1/products", {
       params: {
         productStatus,
         pageNumber,
         pageSize,
+        category,
       },
     });
     return response.data;
