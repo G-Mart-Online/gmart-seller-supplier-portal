@@ -1,12 +1,18 @@
 import httpClient from "./HttpClient";
 
-export const fetchProducts = async (productStatus, pageNumber, pageSize) => {
+export const fetchProducts = async (
+  productStatus,
+  pageNumber,
+  pageSize,
+  category = null
+) => {
   try {
     const response = await httpClient.get("/api/v1/products", {
       params: {
         productStatus,
         pageNumber,
         pageSize,
+        category,
       },
     });
     return response.data;
@@ -62,6 +68,26 @@ export const fetchProductsBySupplier = async (
     });
     return response.data;
   } catch (error) {
+    throw error;
+  }
+};
+
+export const fetchProductSearchResults = async (
+  searchTerm,
+  pageNumber = null,
+  pageSize = null
+) => {
+  try {
+    const response = await httpClient.get("/api/v1/products/search", {
+      params: {
+        searchTerm,
+        pageNumber,
+        pageSize,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
     throw error;
   }
 };
