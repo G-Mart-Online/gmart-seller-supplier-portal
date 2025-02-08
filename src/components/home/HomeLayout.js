@@ -9,7 +9,18 @@ const { Header, Content } = Layout;
 const HomeLayout = ({ children }) => {
   return (
     <Layout className="layout">
-      <Header className="header" style={{ backgroundColor: "white" }}>
+      <Header
+        className="header"
+        style={{
+          backgroundColor: "white",
+          position: "sticky",
+          top: 0,
+          zIndex: 1,
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
         <Navbar />
       </Header>
       <Content className="content">{children}</Content>
