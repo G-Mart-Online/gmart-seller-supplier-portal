@@ -401,11 +401,7 @@ export default function Home() {
               </Title>
             </motion.div>
             <Row gutter={[48, 48]}>
-              <Col
-                xs={24}
-                md={12}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
+              <Col xs={24} md={12}>
                 <motion.div variants={fadeInUp}>
                   <Title
                     level={3}
@@ -413,7 +409,11 @@ export default function Home() {
                   >
                     For Sellers
                   </Title>
-                  <Space direction="vertical" size={24}>
+                  <Space
+                    direction="vertical"
+                    size={24}
+                    style={{ display: "flex" }}
+                  >
                     {[
                       {
                         title: "Register Your Account",
@@ -451,11 +451,7 @@ export default function Home() {
                   </Space>
                 </motion.div>
               </Col>
-              <Col
-                xs={24}
-                md={12}
-                style={{ display: "flex", justifyContent: "center" }}
-              >
+              <Col xs={24} md={12}>
                 <motion.div variants={fadeInUp}>
                   <Title
                     level={3}
@@ -463,7 +459,11 @@ export default function Home() {
                   >
                     For Suppliers
                   </Title>
-                  <Space direction="vertical" size={24}>
+                  <Space
+                    direction="vertical"
+                    size={24}
+                    style={{ display: "flex" }}
+                  >
                     {[
                       {
                         title: "Register as Supplier",
