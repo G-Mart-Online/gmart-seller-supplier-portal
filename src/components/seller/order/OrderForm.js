@@ -192,13 +192,11 @@ const OrderForm = () => {
         orderType: orderDetails.orderType.toUpperCase(),
       };
       const response = await createOrder(modifiedOrderDetails);
-      openNotification(
-        "success",
-        "Order Placed Successfully",
-        "Your order has been created successfully."
-      );
-      resetOrderDetails();
-      setIsModalOpen(false);
+      // openNotification(
+      //   "success",
+      //   "Order Placed Successfully",
+      //   "Your order has been created successfully."
+      // );
       if (response?.sessionUrl) {
         setTimeout(() => {
           window.location.href = response.sessionUrl;
@@ -209,6 +207,8 @@ const OrderForm = () => {
         );
         console.error("Redirection URL not found");
       }
+      //resetOrderDetails();
+      //setIsModalOpen(false);
     } catch (error) {
       setOrderCreationError(
         error.response?.data?.message ||
