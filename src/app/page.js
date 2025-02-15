@@ -14,6 +14,8 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Col, Row, Space, Typography } from "antd";
 import { useEffect } from "react";
+import VisionImg from "../assets/images/vision.png";
+import Image from "next/image";
 
 const { Paragraph, Title, Text } = Typography;
 
@@ -655,14 +657,16 @@ export default function Home() {
                       </Paragraph>
                     </Col>
                     <Col xs={24} md={8} style={{ textAlign: "center" }}>
-                      <img
-                        src="/api/placeholder/300/200"
+                      <Image
+                        src={VisionImg}
                         alt="Vision"
                         style={{
                           maxWidth: "100%",
                           height: "auto",
                           borderRadius: "8px",
                         }}
+                        width={100}
+                        height={100}
                       />
                     </Col>
                   </Row>
